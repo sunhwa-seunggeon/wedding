@@ -1,0 +1,454 @@
+// 이 파일의 CONFIG 값만 바꾸면 청첩장 전체 내용이 함께 변경됩니다.
+const CONFIG = {
+  groom: "김승건",
+  bride: "강선화",
+  // 인트로 편지지에 쓰이는 이름 (성 없이)
+  groomShort: "승건",
+  brideShort: "선화",
+  datingSince: "2013-05-18",   // 사귄 날 — 플레이어 진행바의 시작점
+  weddingDate: "2026-12-27T14:00:00+09:00",
+  venue: "라비니움",
+  hall: "1층 리츄얼홀",
+  address: "서울 송파구 천호대로 996 라비니움 (풍납동 473-1)",
+  tel: "02-472-7004",
+  // 오시는 길 안내 — 항목을 자유롭게 추가·삭제하면 화면이 따라옵니다.
+  directions: [
+    { label: "지하철", text: "5호선·8호선 천호역 10번 출구 앞" },
+    { label: "자차/주차", text: "천호공영주차장 (강동구 천호대로 1026-1) 지하 1·2층\nA·B·C·D 구역 20~60번 사이 주차\n셔틀버스 또는 지하 통로 이용, 도보 약 4분\n1시간 30분 무료 · 연회장 내 주차 등록" },
+  ],
+  // INFORMATION 캐러셀 — 지금은 더미 데이터입니다. 실제 안내로 교체하세요.
+  information: [
+    { photo: "./images/info/1.jpg", caption: "Celebration Time", text: "연회장은 예식 시작 30분 전부터 이용하실 수 있습니다.\n식사는 예식 후 2시간 동안 준비되어 있습니다." },
+    { photo: "./images/info/2.jpg", caption: "Parking", text: "건물 내 주차가 불가하여 천호공영주차장을 이용해 주세요.\n주차 등록은 연회장 안내데스크에서 도와드립니다." },
+    { photo: "./images/info/3.jpg", caption: "Thank You", text: "먼 길 찾아와 주시는 마음에 미리 감사드립니다.\n따뜻한 축복 속에서 첫걸음을 내딛겠습니다." },
+  ],
+  // Kakao Developers에서 발급받은 JavaScript 키. 카카오톡 공유와 지도에 함께 쓰입니다.
+  // 비워두면 공유는 기기 공유 창으로, 지도는 키가 필요 없는 구글 지도로 대체됩니다.
+  kakaoJsKey: "0f0f31b7b43376570ea7609128c57a8f",
+  family: {
+    groomFather: "김재국", groomMother: "송경희",
+    brideFather: "강승묵", brideMother: "심정미",
+  },
+  contacts: [
+    { label: "신랑", name: "김승건", phone: "010-0000-0000" },
+    { label: "신부", name: "강선화", phone: "010-0000-0000" },
+    { label: "신랑 아버지", name: "김재국", phone: "010-0000-0000" },
+    { label: "신랑 어머니", name: "송경희", phone: "010-0000-0000" },
+    { label: "신부 아버지", name: "강승묵", phone: "010-0000-0000" },
+    { label: "신부 어머니", name: "심정미", phone: "010-0000-0000" },
+  ],
+  // side 가 탭(신랑 측 / 신부 측), role 은 카드 안 작은 라벨입니다.
+  // 전화번호는 위 contacts 에서 이름으로 찾아 쓰므로 여기 적지 않습니다.
+  // pay 에 카카오페이 송금 링크를 넣으면 pay 버튼이 생기고, 비우면 버튼이 나오지 않습니다.
+  accounts: [
+    { side: "신랑", role: "신랑", name: "김승건", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신랑", role: "혼주", name: "김재국", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신랑", role: "혼주", name: "송경희", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신부", role: "신부", name: "강선화", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신부", role: "혼주", name: "강승묵", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신부", role: "혼주", name: "심정미", bank: "은행", number: "000-0000-0000", pay: "" },
+  ],
+};
+
+const GALLERY_PHOTOS = [
+  "DSC00018_1.jpg", "DSC00059_1.jpg", "DSC00229_1.jpg", "DSC00609_1.jpg", "DSC00700_1.jpg",
+  "DSC00749_1.jpg", "DSC00913_1.jpg", "DSC01064_1.jpg", "DSC01246_1.jpg", "DSC01303_1.jpg",
+  "DSC01339_1.jpg", "DSC01369_1.jpg", "DSC01503_1.jpg", "DSC01655_1.jpg", "DSC01692_1.jpg",
+  "DSC02348_1.jpg", "DSC02453_1.jpg", "DSC02506_1.jpg", "DSC02548_1.jpg", "DSC02694_1.jpg",
+  "DSC02767_1.jpg", "DSC03123_1.jpg", "DSC03219_1.jpg", "DSC03299_1.jpg", "DSC03437_1.jpg",
+  "DSC03660_1.jpg", "DSC03874_1.jpg", "DSC03902_1.jpg", "DSC04067_1.jpg", "DSC04115_1.jpg",
+];
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const weddingDate = new Date(CONFIG.weddingDate);
+const [weddingYear, weddingMonth, weddingDay] = CONFIG.weddingDate.slice(0, 10).split("-").map(Number);
+const weddingWeekday = new Date(Date.UTC(weddingYear, weddingMonth - 1, weddingDay)).getUTCDay();
+const WEDDING_TIME_ZONE = "Asia/Seoul";
+const weddingDateText = new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "long", day: "numeric", weekday: "long", timeZone: WEDDING_TIME_ZONE }).format(weddingDate);
+
+function fillText(selector, value) {
+  $$(selector).forEach((element) => { element.textContent = value; });
+}
+
+function hydrateInvitation() {
+  const dateText = weddingDateText;
+  const timeText = new Intl.DateTimeFormat("ko-KR", { hour: "numeric", minute: "2-digit", timeZone: WEDDING_TIME_ZONE }).format(weddingDate);
+  const englishDate = `${weddingYear}. ${String(weddingMonth).padStart(2, "0")}. ${String(weddingDay).padStart(2, "0")}. ${["SUN","MON","TUE","WED","THU","FRI","SAT"][weddingWeekday]} · ${new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: WEDDING_TIME_ZONE }).format(weddingDate)}`;
+  fillText("[data-groom]", CONFIG.groom);
+  fillText("[data-bride]", CONFIG.bride);
+  fillText("[data-groom-short]", CONFIG.groomShort);
+  fillText("[data-bride-short]", CONFIG.brideShort);
+  fillText("[data-venue]", CONFIG.venue);
+  fillText("[data-hall]", CONFIG.hall);
+  $$("[data-hall]").forEach((element) => { element.hidden = !CONFIG.hall; });
+  fillText("[data-address]", CONFIG.address);
+  fillText("[data-tel]", CONFIG.tel);
+  fillText("[data-date-long]", englishDate);
+  fillText("[data-date-short]", `${weddingYear}.${String(weddingMonth).padStart(2, "0")}.${String(weddingDay).padStart(2, "0")}. ${["SUN","MON","TUE","WED","THU","FRI","SAT"][weddingWeekday]}`);
+  fillText("[data-date-title]", dateText);
+  fillText("[data-time]", timeText);
+  fillText("[data-groom-father]", CONFIG.family.groomFather);
+  fillText("[data-groom-mother]", CONFIG.family.groomMother);
+  fillText("[data-bride-father]", CONFIG.family.brideFather);
+  fillText("[data-bride-mother]", CONFIG.family.brideMother);
+  document.title = `${CONFIG.groom} ♥ ${CONFIG.bride}, 결혼합니다`;
+  const naverMapUrl = `https://map.naver.com/p/search/${encodeURIComponent(CONFIG.address)}`;
+  $("#naverMap").href = naverMapUrl;
+  $("#kakaoMap").href = `https://map.kakao.com/link/search/${encodeURIComponent(CONFIG.address)}`;
+  $$("a[data-tel]").forEach((element) => { element.href = `tel:${CONFIG.tel.replaceAll("-", "")}`; });
+  // 티맵은 웹 주소가 없어 앱 스킴을 씁니다(앱이 설치된 기기에서만 열립니다).
+  $("#tmapLink").href = `tmap://search?name=${encodeURIComponent(CONFIG.venue)}`;
+}
+
+// 네이버·카카오 지도는 iframe 임베드를 막아 두어서 JavaScript SDK 로만 표시할 수 있습니다.
+// 카카오 SDK 는 지오코더를 포함해서 좌표 없이 주소만으로 위치를 찾습니다.
+// 주의: 지도 SDK 는 소문자 window.kakao, 공유 SDK 는 대문자 window.Kakao 로 서로 다른 객체입니다.
+function renderFallbackMap(box) {
+  // 키가 없을 때 쓰는 대체 지도. 괄호 안 지번은 지오코딩을 방해해서 떼고 넘깁니다.
+  const query = CONFIG.address.replace(/\s*\([^)]*\)\s*$/, "").trim();
+  box.innerHTML = `<iframe title="${CONFIG.venue} 위치 지도" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(query)}&z=17&hl=ko&output=embed"></iframe>`;
+}
+
+function drawKakaoMap(box, latitude, longitude) {
+  // 카카오 검색 결과의 좌표는 문자열로 내려옵니다.
+  const position = new kakao.maps.LatLng(Number(latitude), Number(longitude));
+  const map = new kakao.maps.Map(box, { center: position, level: 3 });
+  new kakao.maps.Marker({ position, map });
+  map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+}
+
+function renderMap() {
+  const box = $("#mapCanvas");
+  if (!CONFIG.kakaoJsKey) return renderFallbackMap(box);
+  const script = document.createElement("script");
+  script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${encodeURIComponent(CONFIG.kakaoJsKey)}&autoload=false&libraries=services`;
+  script.onerror = () => renderFallbackMap(box);
+  script.onload = () => kakao.maps.load(() => {
+    const address = CONFIG.address.replace(/\s*\([^)]*\)\s*$/, "").trim();
+    new kakao.maps.services.Geocoder().addressSearch(address, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) return drawKakaoMap(box, result[0].y, result[0].x);
+      // 주소 검색이 실패하면 예식장 이름으로 장소를 찾습니다.
+      new kakao.maps.services.Places().keywordSearch(`${CONFIG.venue} ${address}`, (places, placeStatus) => {
+        if (placeStatus === kakao.maps.services.Status.OK) drawKakaoMap(box, places[0].y, places[0].x);
+        else renderFallbackMap(box);
+      });
+    });
+  });
+  document.head.appendChild(script);
+}
+
+// 신랑·신부 카드의 사진을 5초마다 교차합니다(현재 <-> 어린 시절).
+// 카드마다 사진이 2장 미만이면(파일이 없어 onerror 로 제거된 경우) 그 카드는 건너뜁니다.
+const PROFILE_SWAP_MS = 5000;
+
+function setupProfiles() {
+  // 움직임을 줄이도록 설정한 기기에서는 자동 전환을 하지 않습니다.
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cards = $$(".profile__card").map((card) => $$(".profile__photo", card)).filter((photos) => photos.length > 1);
+  if (!cards.length) return;
+  setInterval(() => {
+    cards.forEach((photos) => {
+      const index = photos.findIndex((photo) => photo.classList.contains("is-active"));
+      photos[index].classList.remove("is-active");
+      photos[(index + 1) % photos.length].classList.add("is-active");
+    });
+  }, PROFILE_SWAP_MS);
+}
+
+// 요일 정렬 없이 1일부터 말일까지 한 줄에 9칸씩 흘려 놓는 활자식 달력.
+function fillDateCard() {
+  const base = new Date(Date.UTC(weddingYear, weddingMonth - 1, weddingDay));
+  const lastDate = new Date(Date.UTC(weddingYear, weddingMonth, 0)).getUTCDate();
+  $("#monthCal").innerHTML = Array.from({ length: lastDate }, (_, index) => {
+    const day = index + 1;
+    return `<span class="${day === weddingDay ? "is-wedding" : ""}">${day}</span>`;
+  }).join("");
+
+  fillText("[data-month-name]", `${new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(base)}.`);
+}
+
+// 오시는 길 안내 항목.
+function renderDirections() {
+  $("#directions").innerHTML = CONFIG.directions.map((item) => `
+    <div class="direction">
+      <span class="direction__label">${item.label}</span>
+      <p>${item.text}</p>
+    </div>`).join("");
+}
+
+// INFORMATION 캐러셀. 좌우로 밀어 넘기고 점이 현재 위치를 표시합니다.
+function setupInformation() {
+  const track = $("#infoTrack");
+  const dots = $("#infoDots");
+  track.innerHTML = CONFIG.information.map((item) => `
+    <article class="info-slide">
+      <img src="${item.photo}" alt="" loading="lazy" onerror="this.remove()" />
+      <p class="info-slide__caption">${item.caption}</p>
+      <p class="info-slide__text">${item.text}</p>
+    </article>`).join("");
+  dots.innerHTML = CONFIG.information.map((_, index) =>
+    `<button class="info-dot${index ? "" : " is-active"}" type="button" data-index="${index}" aria-label="${index + 1}번째 안내"></button>`).join("");
+
+  const slides = $$(".info-slide", track);
+  const marks = $$(".info-dot", dots);
+  const goTo = (index) => track.scrollTo({ left: slides[index].offsetLeft - track.offsetLeft, behavior: "smooth" });
+  marks.forEach((mark) => mark.addEventListener("click", () => goTo(Number(mark.dataset.index))));
+
+  // 스크롤이 멈춘 뒤 가장 가까운 슬라이드를 현재로 표시합니다.
+  track.addEventListener("scroll", () => {
+    const middle = track.scrollLeft + track.clientWidth / 2;
+    let nearest = 0;
+    slides.forEach((slide, index) => {
+      const center = slide.offsetLeft - track.offsetLeft + slide.clientWidth / 2;
+      if (Math.abs(center - middle) < Math.abs(slides[nearest].offsetLeft - track.offsetLeft + slides[nearest].clientWidth / 2 - middle)) nearest = index;
+    });
+    marks.forEach((mark, index) => mark.classList.toggle("is-active", index === nearest));
+  }, { passive: true });
+}
+
+function updateCountdown() {
+  const days = Math.ceil((weddingDate.getTime() - Date.now()) / 86400000);
+  $("#dDayText").textContent = days > 0 ? `D-${days}일` : days === 0 ? "D-DAY" : "감사합니다";
+}
+
+function renderContacts() {
+  $("#contactList").innerHTML = CONFIG.contacts.map((item) => `
+    <div class="contact-row">
+      <span>${item.label} <b>${item.name}</b></span>
+      <a href="tel:${item.phone.replaceAll("-", "")}" aria-label="${item.label}에게 전화">전화</a>
+      <a href="sms:${item.phone.replaceAll("-", "")}" aria-label="${item.label}에게 문자">문자</a>
+    </div>`).join("");
+}
+
+const COPY_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M15 5.5H7A2 2 0 0 0 5 7.5v8"/></svg>`;
+
+// 신랑 측 / 신부 측 밑줄 탭 + 한 줄짜리 계좌 행.
+function renderAccounts() {
+  const sides = [...new Set(CONFIG.accounts.map((item) => item.side))];
+
+  $("#accountTabs").innerHTML = sides.map((side, index) => `
+    <button class="account-tab${index ? "" : " is-active"}" type="button" role="tab" data-side="${side}" aria-selected="${!index}">${side}측에게</button>`).join("");
+
+  function renderSide(side) {
+    $("#accountList").innerHTML = CONFIG.accounts.filter((item) => item.side === side).map((item) => `
+      <div class="account-row">
+        <span class="account-row__who"><small>${item.role}</small><i>|</i><b>${item.name}</b></span>
+        <span class="account-row__acc">
+          <span class="account-row__bank">${item.bank}</span>
+          <span class="account-row__num">${item.number}</span>
+        </span>
+        <button class="account-copy" type="button" data-account="${item.number}">COPY ${COPY_ICON}</button>
+      </div>`).join("");
+    $$("[data-account]").forEach((button) => button.addEventListener("click", () => copyText(button.dataset.account, "계좌번호를 복사했습니다.")));
+  }
+
+  $$(".account-tab").forEach((tab) => tab.addEventListener("click", () => {
+    $$(".account-tab").forEach((other) => {
+      other.classList.toggle("is-active", other === tab);
+      other.setAttribute("aria-selected", String(other === tab));
+    });
+    renderSide(tab.dataset.side);
+  }));
+
+  renderSide(sides[0]);
+}
+
+let toastTimer;
+function showToast(message) {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+async function copyText(text, message) {
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(message);
+  } catch {
+    window.prompt("아래 내용을 복사해 주세요.", text);
+  }
+}
+
+function setupDialogs() {
+  const dialogs = { contact: $("#contactDialog") };
+  $$("[data-open]").forEach((button) => button.addEventListener("click", () => dialogs[button.dataset.open].showModal()));
+  $$("dialog .dialog-close").forEach((button) => button.addEventListener("click", () => button.closest("dialog").close()));
+  $$("dialog").forEach((dialog) => dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  }));
+}
+
+// 필름 가장자리 각인 — 사귄 날과 결혼식 날.
+function fillFilmEdge() {
+  const dot = (iso) => iso.slice(0, 10).split("-").map(Number).join(".");
+  $("#edgeStart").textContent = dot(CONFIG.datingSince);
+  $("#edgeEnd").textContent = dot(CONFIG.weddingDate);
+}
+
+// 플레이어 모양 갤러리. 컨트롤이 실제로 동작합니다.
+const SLIDESHOW_MS = 3500;
+
+function setupGallery() {
+  const strip = $("#filmstrip");
+  const main = $("#viewerImage");
+  strip.innerHTML = GALLERY_PHOTOS.map((filename, index) => `
+    <button class="filmstrip__item" type="button" data-index="${index}" aria-label="${index + 1}번째 사진 보기">
+      <img src="./images/gallery/thumb/${filename}" alt="" loading="${index < 8 ? "eager" : "lazy"}" />
+    </button>`).join("");
+
+  const thumbs = $$(".filmstrip__item");
+  const total = GALLERY_PHOTOS.length;
+  $("#playerTotal").textContent = String(total).padStart(2, "0");
+  let current = 0;
+  let timer = null;
+
+  // 썸네일을 스트립 가운데로. 페이지가 튀지 않도록 스트립만 스크롤합니다.
+  function centerThumb() {
+    const thumb = thumbs[current];
+    strip.scrollTo({ left: thumb.offsetLeft - (strip.clientWidth - thumb.clientWidth) / 2, behavior: "smooth" });
+  }
+
+  function show(index, scroll = true) {
+    current = (index + total) % total;
+    const source = `./images/gallery/full/${GALLERY_PHOTOS[current]}`;
+    main.src = source;
+    main.alt = `${CONFIG.groom}과 ${CONFIG.bride}의 웨딩 사진 ${current + 1}`;
+    $("#lightboxImage").src = source;
+    $("#playerFill").style.width = `${((current + 1) / total) * 100}%`;
+    $("#playerNow").textContent = String(current + 1).padStart(2, "0");
+    thumbs.forEach((thumb, i) => thumb.classList.toggle("is-active", i === current));
+    if (scroll) centerThumb();
+  }
+
+  function setPlaying(on) {
+    $("#playToggle").classList.toggle("is-on", on);
+    $("#playLabel").textContent = on ? "STOP" : "AUTO";
+    $("#playToggle").setAttribute("aria-label", on ? "자동 넘기기 정지" : "자동 넘기기 시작");
+  }
+  function stop() { clearInterval(timer); timer = null; setPlaying(false); }
+  $("#playToggle").addEventListener("click", () => {
+    if (timer) return stop();
+    timer = setInterval(() => show(current + 1), SLIDESHOW_MS);
+    setPlaying(true);
+  });
+
+  // 직접 넘기면 자동 넘김을 멈춥니다(둘이 다투지 않도록).
+  const manual = (index) => { if (timer) stop(); show(index); };
+  thumbs.forEach((thumb) => thumb.addEventListener("click", () => manual(Number(thumb.dataset.index))));
+  $("#viewerPrev").addEventListener("click", () => manual(current - 1));
+  $("#viewerNext").addEventListener("click", () => manual(current + 1));
+  $("#prevImage").addEventListener("click", () => show(current - 1));
+  $("#nextImage").addEventListener("click", () => show(current + 1));
+
+  // 썸네일 스트립을 한 화면씩 좌우로 굴립니다.
+  const pageWidth = () => strip.clientWidth * 0.8;
+  $("#stripPrev").addEventListener("click", () => strip.scrollBy({ left: -pageWidth(), behavior: "smooth" }));
+  $("#stripNext").addEventListener("click", () => strip.scrollBy({ left: pageWidth(), behavior: "smooth" }));
+
+  main.addEventListener("click", () => {
+    document.documentElement.classList.add("lightbox-open");
+    document.body.classList.add("lightbox-open");
+    $("#lightbox").showModal();
+  });
+  $("#lightbox").addEventListener("close", () => {
+    document.documentElement.classList.remove("lightbox-open");
+    document.body.classList.remove("lightbox-open");
+  });
+
+  setPlaying(false);
+  show(0, false);
+}
+
+async function shareInvitation() {
+  const data = { title: `${CONFIG.groom} ♥ ${CONFIG.bride}, 결혼합니다`, text: `${CONFIG.groom}과 ${CONFIG.bride}의 결혼식에 초대합니다.`, url: location.href };
+  try {
+    if (navigator.share) await navigator.share(data);
+    else await copyText(location.href, "초대장 주소를 복사했습니다.");
+  } catch (error) {
+    if (error.name !== "AbortError") copyText(location.href, "초대장 주소를 복사했습니다.");
+  }
+}
+
+
+
+
+
+
+
+function loadKakaoSdk() {
+  return new Promise((resolve) => {
+    if (!CONFIG.kakaoJsKey) return resolve(false);
+    if (window.Kakao?.isInitialized()) return resolve(true);
+    const ready = () => {
+      try {
+        if (!window.Kakao?.isInitialized()) window.Kakao?.init(CONFIG.kakaoJsKey);
+        resolve(true);
+      } catch {
+        resolve(false);
+      }
+    };
+    const existing = $("#kakao-sdk");
+    if (existing) {
+      existing.addEventListener("load", ready, { once: true });
+      return;
+    }
+    const script = document.createElement("script");
+    script.id = "kakao-sdk";
+    script.src = "https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js";
+    script.crossOrigin = "anonymous";
+    script.onload = ready;
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+async function shareToKakao() {
+  const title = `${CONFIG.groom} ♥ ${CONFIG.bride}의 결혼식에 초대합니다`;
+  const ok = await loadKakaoSdk();
+  if (ok && window.Kakao) {
+    window.Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title,
+        description: `${CONFIG.venue} · ${new Intl.DateTimeFormat("ko-KR", { dateStyle: "long", timeStyle: "short", timeZone: WEDDING_TIME_ZONE }).format(weddingDate)}`,
+        imageUrl: new URL("./images/hero-room.jpg", location.href).href,
+        link: { mobileWebUrl: location.href, webUrl: location.href },
+      },
+      buttons: [{ title: "초대장 보기", link: { mobileWebUrl: location.href, webUrl: location.href } }],
+    });
+    return;
+  }
+  await shareInvitation();
+}
+
+
+function setupReveal() {
+  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.classList.add("visible");
+  }), { threshold: 0.12 });
+  $$(".reveal").forEach((element) => observer.observe(element));
+}
+
+hydrateInvitation();
+renderMap();
+fillDateCard();
+renderDirections();
+setupInformation();
+setupProfiles();
+renderContacts();
+renderAccounts();
+setupDialogs();
+setupGallery();
+fillFilmEdge();
+setupReveal();
+updateCountdown();
+setInterval(updateCountdown, 60000);
+$(".scroll-cue").addEventListener("click", () => $(".greeting").scrollIntoView());
+$("#copyAddress").addEventListener("click", () => copyText(CONFIG.address, "주소를 복사했습니다."));
+$("#kakaoShare").addEventListener("click", shareToKakao);
+$("#copyUrl").addEventListener("click", () => copyText(location.href, "초대장 주소를 복사했습니다."));
+// 인트로 애니메이션(봉투 열림 → 편지 올라옴)이 끝난 뒤 걷어냅니다.
+window.addEventListener("load", () => setTimeout(() => $("#intro").classList.add("hide"), 2700));

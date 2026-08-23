@@ -1,0 +1,77 @@
+# 모바일 청첩장
+
+`sunhwa-seunggeon.github.io/wedding/`에서 정적 호스팅할 수 있는 모바일 청첩장입니다.
+빌드 도구나 의존성 없이 `index.html` / `styles.css` / `script.js` 세 파일로 동작합니다.
+
+디자인과 코드는 특정 상용 청첩장을 복제하지 않고, 여백이 넉넉한 종이 초대장과 에디토리얼 웨딩 무드에서 영감을 받아 독립적으로 제작했습니다.
+
+## 정보 수정
+
+`script.js` 맨 위의 `CONFIG`만 수정하면 이름, 날짜, 장소, 오시는 길 안내, 안내 문구, 가족 연락처, 계좌번호가 화면 전체에 반영됩니다. 화면에 값을 직접 박아 넣은 곳은 없습니다.
+
+- `directions` / `information` 은 배열입니다. 항목을 추가·삭제하면 화면이 따라옵니다.
+- 전화번호는 `contacts` 한 곳에만 적습니다. 계좌 목록은 이름으로 찾아 씁니다.
+- `accounts[].pay` 에 카카오페이 송금 링크를 넣으면 그 사람 카드에만 버튼이 생깁니다.
+
+## 사진
+
+| 경로 | 용도 | 비율 |
+| --- | --- | --- |
+| `images/hero-room.jpg` | 표지 | 세로 |
+| `images/gallery/thumb`, `images/gallery/full` | 갤러리 (`GALLERY_PHOTOS` 목록) | 세로 2:3 |
+| `images/profile/groom-now.jpg`, `groom-kid.jpg` | 신랑 카드 (5초마다 교차) | 세로 |
+| `images/profile/bride-now.jpg`, `bride-kid.jpg` | 신부 카드 (5초마다 교차) | 세로 |
+| `images/date-photo.jpg` | DATE 섹션 | 정사각 |
+| `images/info/1~3.jpg` | INFORMATION 캐러셀 | 가로 1.95 |
+| `images/ticket.png` | 티켓형 초대장 | 세로, 배경 투명 |
+| `images/handwritten-invitation.png` | 손글씨 인사말 | 가로 |
+
+`images/info/1~3.jpg` 는 아직 웨딩 사진 복사본이 자리표시로 들어가 있습니다. 실제 안내 사진으로 덮어쓰세요.
+
+## 로컬 실행
+
+카카오 지도·공유는 `file://` 에서 동작하지 않습니다(도메인이 없어 카카오가 거부). 로컬 서버로 띄우고 `http://localhost:3000` 으로 접속하세요.
+
+```bash
+npx serve . -l 3000
+```
+
+## GitHub Pages 배포
+
+1. 저장소 `Settings → Pages`에서 Source를 **GitHub Actions**로 지정합니다.
+2. `main` 브랜치에 push하면 자동 배포됩니다.
+
+원본 사진 폴더(`photos/`)는 546MB라 `.gitignore` 에 넣어 두었습니다. 웹용은 `images/gallery/` 에 있습니다.
+
+## 포함 기능
+
+- 모바일 중심 반응형 레이아웃, 봉투가 열리는 오프닝과 스크롤 등장 애니메이션
+- 카메라 뷰파인더 형태의 갤러리 — 한 컷씩 넘기기, 자동 넘기기, 전체 화면 확대
+- 예식 달력과 실시간 D-Day
+- 카카오 지도(키 없으면 구글 지도로 대체), 네이버 지도·티맵 연결, 주소 복사
+- 가족 연락처, 계좌번호 복사
+- 카카오톡 공유(키 없으면 기기 공유 창), URL 복사
+- `prefers-reduced-motion` 존중 — 오프닝과 사진 자동 교차를 끕니다
+
+## 카카오 설정 (공유 + 지도)
+
+`script.js`의 `CONFIG.kakaoJsKey`에 Kakao Developers JavaScript 키를 하나 입력하면 **카카오톡 공유와 지도에 함께** 쓰입니다.
+
+1. [Kakao Developers](https://developers.kakao.com)에서 앱을 만들고 **앱 키 → JavaScript 키**를 복사합니다.
+2. **앱 설정 → 플랫폼 → Web**에 배포 주소(`https://sunhwa-seunggeon.github.io`)를 등록합니다. 로컬 확인용으로 `http://localhost:3000`도 함께 등록하세요.
+3. **앱 설정 → 플랫폼 키 → JavaScript 키 → JavaScript SDK 도메인**에도 같은 주소를 등록합니다. (2번과 별개입니다 — 지도 SDK가 보는 화이트리스트)
+4. **제품 설정 → 카카오맵**을 활성화합니다.
+
+지도는 좌표를 직접 넣지 않아도 `CONFIG.address`를 카카오 지오코더가 변환해 표시합니다. 키가 없거나 SDK를 불러오지 못하면 공유는 기기 기본 공유 창으로, 지도는 키가 필요 없는 구글 지도로 자동 대체됩니다.
+
+티맵은 웹 주소가 없어 앱 스킴(`tmap://`)을 씁니다. 앱이 설치된 기기에서만 열립니다.
+
+## 디자인 규칙
+
+섹션이 제각각 보이지 않도록 세 가지를 지킵니다.
+
+1. **상자를 만들지 않는다** — 테두리·배경·라운드 대신 여백과 헤어라인으로 구분
+2. **바닥색은 두 단계만** — `--paper` / `--paper-2` 를 섹션마다 번갈아
+3. **글꼴은 둘** — Noto Sans KR(본문) + Cormorant 이탤릭(작은 영문 라벨). 표지 `Our Wedding` 의 Dancing Script와 갤러리 HUD의 고정폭은 의도된 예외입니다.
+
+색은 `:root` 토큰으로만 씁니다. 어두운 배경에서 명암비가 확보된 값이라 직접 색을 적지 마세요.

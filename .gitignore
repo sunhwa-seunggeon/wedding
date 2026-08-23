@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# 원본 사진 (웹용은 images/gallery/ 에 있음)
+photos/
