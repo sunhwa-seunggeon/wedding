@@ -32,6 +32,7 @@ const CONFIG = {
   ],
   // Kakao Developers에서 발급받은 JavaScript 키. 카카오톡 공유와 지도에 함께 쓰입니다.
   // 비워두면 공유는 기기 공유 창으로, 지도는 키가 필요 없는 구글 지도로 대체됩니다.
+  shareImage: "./images/share.jpg",   // 카카오·OG 공유 카드에 쓰는 사진
   kakaoJsKey: "0f0f31b7b43376570ea7609128c57a8f",
   family: {
     groomFather: "김재국", groomMother: "송경희",
@@ -93,7 +94,6 @@ function hydrateInvitation() {
   fillText("[data-address]", CONFIG.address);
   fillText("[data-tel]", CONFIG.tel);
   fillText("[data-date-long]", englishDate);
-  fillText("[data-date-short]", `${weddingYear}.${String(weddingMonth).padStart(2, "0")}.${String(weddingDay).padStart(2, "0")}. ${["SUN","MON","TUE","WED","THU","FRI","SAT"][weddingWeekday]}`);
   fillText("[data-date-title]", dateText);
   fillText("[data-time]", timeText);
   fillText("[data-groom-father]", CONFIG.family.groomFather);
@@ -331,7 +331,7 @@ function fillFilmEdge() {
 }
 
 // 플레이어 모양 갤러리. 컨트롤이 실제로 동작합니다.
-const SLIDESHOW_MS = 3500;
+const SLIDESHOW_MS = 2000;
 
 function setupGallery() {
   const strip = $("#filmstrip");
@@ -405,7 +405,7 @@ function setupGallery() {
 }
 
 async function shareInvitation() {
-  const data = { title: `${CONFIG.groom} ♥ ${CONFIG.bride}, 결혼합니다`, text: `${CONFIG.groom}과 ${CONFIG.bride}의 결혼식에 초대합니다.`, url: location.href };
+  const data = { title: SHARE_TITLE, text: SHARE_DESCRIPTION, url: location.href };
   try {
     if (navigator.share) await navigator.share(data);
     else await copyText(location.href, "초대장 주소를 복사했습니다.");
@@ -447,19 +447,26 @@ function loadKakaoSdk() {
   });
 }
 
+// 공유 문구는 여기서 한 번만 만듭니다. 카카오 카드와 웹 공유가 같은 문장을 씁니다.
+const SHARE_TITLE = `${CONFIG.groom} \u2665 ${CONFIG.bride} 결혼합니다`;
+const SHARE_DESCRIPTION = `${weddingDateText} ${new Intl.DateTimeFormat("ko-KR", { hour: "numeric", minute: "2-digit", timeZone: WEDDING_TIME_ZONE }).format(weddingDate)}`;
+
 async function shareToKakao() {
-  const title = `${CONFIG.groom} ♥ ${CONFIG.bride}의 결혼식에 초대합니다`;
   const ok = await loadKakaoSdk();
   if (ok && window.Kakao) {
+    // 카카오 피드 카드: 큰 사진 + 제목 + 날짜 한 줄 + 버튼.
+    // imageUrl 은 카카오 서버가 직접 긁어가므로 반드시 공개된 절대 주소여야 합니다
+    // (localhost 에서는 사진이 비어 보이는 게 정상입니다).
+    const link = { mobileWebUrl: location.href, webUrl: location.href };
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
-        title,
-        description: `${CONFIG.venue} · ${new Intl.DateTimeFormat("ko-KR", { dateStyle: "long", timeStyle: "short", timeZone: WEDDING_TIME_ZONE }).format(weddingDate)}`,
-        imageUrl: new URL("./images/hero-room.jpg", location.href).href,
-        link: { mobileWebUrl: location.href, webUrl: location.href },
+        title: SHARE_TITLE,
+        description: SHARE_DESCRIPTION,
+        imageUrl: new URL(CONFIG.shareImage, location.href).href,
+        link,
       },
-      buttons: [{ title: "초대장 보기", link: { mobileWebUrl: location.href, webUrl: location.href } }],
+      buttons: [{ title: "청첩장 보기", link }],
     });
     return;
   }
@@ -499,4 +506,3 @@ $("#copyAddress").addEventListener("click", () => copyText(CONFIG.address, "주�
 $("#kakaoShare").addEventListener("click", shareToKakao);
 $("#copyUrl").addEventListener("click", () => copyText(location.href, "초대장 주소를 복사했습니다."));
 // 인트로 애니메이션(봉투 열림 → 편지 올라옴)이 끝난 뒤 걷어냅니다.
-window.addEventListener("load", () => setTimeout(() => $("#intro").classList.add("hide"), 2700));
