@@ -12,14 +12,22 @@ const CONFIG = {
   address: "서울 송파구 천호대로 996 라비니움 (풍납동 473-1)",
   tel: "02-472-7004",
   // 오시는 길 안내 — 항목을 자유롭게 추가·삭제하면 화면이 따라옵니다.
+  // 교통편은 크게 지하철 / 자차 두 갈래. 갈래 안의 세부 항목만 라벨을 답니다.
   directions: [
-    { label: "지하철", text: "5호선·8호선 천호역 10번 출구 앞" },
-    { label: "자차/주차", text: "천호공영주차장 (강동구 천호대로 1026-1) 지하 1·2층\nA·B·C·D 구역 20~60번 사이 주차\n셔틀버스 또는 지하 통로 이용, 도보 약 4분\n1시간 30분 무료 · 연회장 내 주차 등록" },
+    { label: "지하철", items: [
+      { text: "5호선·8호선 천호역 10번 출구 앞" },
+    ] },
+    { label: "자차", items: [
+      { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
+      { label: "주차 위치", text: "지하 1층 · 지하 2층\n기둥 A·B·C·D 구역 (20번 ~ 60번 사이)" },
+      { label: "예식장까지", text: "주차 후 현대백화점 방향으로 직진하시면\n천호역 10번 출구 앞에 예식장이 있습니다." },
+      { label: "주차 등록", text: "2층 연회장 입구에서 등록하시면 1시간 30분 무료입니다." },
+    ] },
   ],
   // INFORMATION 캐러셀 — 지금은 더미 데이터입니다. 실제 안내로 교체하세요.
   information: [
-    { photo: "./images/info/1.jpg", caption: "Celebration Time", text: "연회장은 예식 시작 30분 전부터 이용하실 수 있습니다.\n식사는 예식 후 2시간 동안 준비되어 있습니다." },
-    { photo: "./images/info/2.jpg", caption: "Parking", text: "건물 내 주차가 불가하여 천호공영주차장을 이용해 주세요.\n주차 등록은 연회장 안내데스크에서 도와드립니다." },
+    { photo: "./images/info/1.jpg", caption: "Reception", text: "식사는 2층 연회장에 준비되어 있습니다.\n오후 1시 30분부터 3시 30분까지, 예식 전후 2시간 동안 이용하실 수 있습니다." },
+    { photo: "./images/info/2.jpg", caption: "ATM", text: "1층 출입구 왼쪽, 계단과 엘리베이터 사이 공간에\nATM 2대가 마련되어 있습니다." },
     { photo: "./images/info/3.jpg", caption: "Thank You", text: "먼 길 찾아와 주시는 마음에 미리 감사드립니다.\n따뜻한 축복 속에서 첫걸음을 내딛겠습니다." },
   ],
   // Kakao Developers에서 발급받은 JavaScript 키. 카카오톡 공유와 지도에 함께 쓰입니다.
@@ -138,42 +146,76 @@ function renderMap() {
   document.head.appendChild(script);
 }
 
-// 신랑·신부 카드의 사진을 5초마다 교차합니다(현재 <-> 어린 시절).
-// 카드마다 사진이 2장 미만이면(파일이 없어 onerror 로 제거된 경우) 그 카드는 건너뜁니다.
-const PROFILE_SWAP_MS = 5000;
-
+// 신랑·신부 사진은 어느 쪽을 눌러도 두 장이 함께 현재 <-> 아기 때로 바뀝니다.
+// 자동 전환이 아니라 사용자가 누른 만큼만 움직이므로 prefers-reduced-motion 예외가 필요 없습니다.
 function setupProfiles() {
-  // 움직임을 줄이도록 설정한 기기에서는 자동 전환을 하지 않습니다.
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const cards = $$(".profile__card").map((card) => $$(".profile__photo", card)).filter((photos) => photos.length > 1);
-  if (!cards.length) return;
-  setInterval(() => {
-    cards.forEach((photos) => {
-      const index = photos.findIndex((photo) => photo.classList.contains("is-active"));
-      photos[index].classList.remove("is-active");
-      photos[(index + 1) % photos.length].classList.add("is-active");
+  // 아기 때 사진 파일이 없어 onerror 로 지워진 카드는 넘길 대상이 없습니다.
+  const cards = $$(".profile__card").filter((card) => $$(".profile__photo", card).length > 1);
+  if (!cards.length) {
+    // 넘길 사진이 없으면 깜빡이는 커서도 지웁니다 — 없는 동작을 안내하지 않도록.
+    $$(".profile__card").forEach((card) => { card.style.cursor = "default"; });
+    $$(".profile__cue").forEach((cue) => cue.remove());
+    return;
+  }
+
+  let showBaby = false;
+  function render() {
+    cards.forEach((card) => {
+      $$(".profile__photo", card).forEach((photo, index) => photo.classList.toggle("is-active", index === (showBaby ? 1 : 0)));
+      card.setAttribute("aria-label", showBaby ? "지금 모습 보기" : "아기 때 모습 보기");
+      card.setAttribute("aria-pressed", String(showBaby));
     });
-  }, PROFILE_SWAP_MS);
+  }
+  cards.forEach((card) => card.addEventListener("click", () => { showBaby = !showBaby; render(); }));
+  render();
 }
 
-// 요일 정렬 없이 1일부터 말일까지 한 줄에 9칸씩 흘려 놓는 활자식 달력.
+// 한 번에 그은 낙서 별 두 개. 꼭짓점 0->2->4->1->3->0 순서로 한 붓에 긋고,
+// 시작점을 조금 지나치게 그어 손으로 그린 느낌을 냅니다.
+// (좌우 꼭짓점 y 는 -5.9 로 위쪽입니다 — 아래로 잡으면 별이 아니라 뭉개진 도형이 됩니다.)
+// 큰 별은 왼쪽 위, 작은 별은 오른쪽 아래 — 숫자가 그 사이 대각선 빈자리에 앉습니다.
+const WEDDING_STARS = '<svg class="daystrip__stars" viewBox="0 0 115 100" aria-hidden="true"><g transform="translate(25 25) scale(1.05) rotate(-12)" stroke-width="2.1"><path d="M0 -19 12 16-19-5 19-6-11 16 1-18 3-10"/><path d="M-2 -17 10 18-20-4" opacity=".65"/></g><g transform="translate(93 75) scale(.58) rotate(14)" stroke-width="3.1"><path d="M0 -19 12 16-19-5 19-6-11 16 1-18 3-10"/></g></svg>';
+
 function fillDateCard() {
   const base = new Date(Date.UTC(weddingYear, weddingMonth - 1, weddingDay));
-  const lastDate = new Date(Date.UTC(weddingYear, weddingMonth, 0)).getUTCDate();
-  $("#monthCal").innerHTML = Array.from({ length: lastDate }, (_, index) => {
-    const day = index + 1;
-    return `<span class="${day === weddingDay ? "is-wedding" : ""}">${day}</span>`;
-  }).join("");
+  const weekdayOf = (date) => new Intl.DateTimeFormat("en-US", { weekday: "long", timeZone: "UTC" }).format(date).toUpperCase();
+  const monthOf = (date) => new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(date).toUpperCase();
+  fillText("[data-cal-month]", `${monthOf(base)} ${weddingYear}`);
 
-  fillText("[data-month-name]", `${new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(base)}.`);
+  // 예식일이 든 한 주(월요일 시작). dow 0=일 이므로 월요일까지 거슬러 갈 일수는 (dow+6)%7.
+  const mondayOffset = (base.getUTCDay() + 6) % 7;
+  const days = Array.from({ length: 7 }, (unused, index) => {
+    const date = new Date(Date.UTC(weddingYear, weddingMonth - 1, weddingDay - mondayOffset + index));
+    const dow = date.getUTCDay();
+    return {
+      weekday: weekdayOf(date).slice(0, 3),
+      date: date.getUTCDate(),
+      isWedding: date.getTime() === base.getTime(),
+      weekendClass: dow === 0 ? "is-sun" : dow === 6 ? "is-sat" : "",
+    };
+  });
+
+  $("#dayStrip").innerHTML = `
+    <div class="daystrip__head">${days.map((day) => `<span class="${day.weekendClass}">${day.weekday}</span>`).join("")}</div>
+    <div class="daystrip__body">${days.map((day) => `
+      <div class="daystrip__cell${day.isWedding ? " is-wedding" : ""}${day.weekendClass ? " " + day.weekendClass : ""}">
+        <b class="daystrip__num">${day.date}</b>
+        ${day.isWedding ? WEDDING_STARS : ""}
+      </div>`).join("")}</div>`;
+
 }
+
 
 // 오시는 길 안내 항목.
 function renderDirections() {
-  $("#directions").innerHTML = CONFIG.directions.map((item) => `
-    <div class="direction">
-      <span class="direction__label">${item.label}</span>
-      <p>${item.text}</p>
+  $("#directions").innerHTML = CONFIG.directions.map((group) => `
+    <div class="direction-group">
+      <span class="direction-group__title">${group.label}</span>
+      ${group.items.map((item) => `
+      <div class="direction">
+        ${item.label ? `<span class="direction__label">${item.label}</span>` : ""}
+        <p>${item.text}</p>
+      </div>`).join("")}
     </div>`).join("");
 }
 
@@ -209,7 +251,7 @@ function setupInformation() {
 
 function updateCountdown() {
   const days = Math.ceil((weddingDate.getTime() - Date.now()) / 86400000);
-  $("#dDayText").textContent = days > 0 ? `D-${days}일` : days === 0 ? "D-DAY" : "감사합니다";
+  $("#dDayText").textContent = days > 0 ? `D-${days}` : days === 0 ? "D-DAY" : "감사합니다";
 }
 
 function renderContacts() {
@@ -426,10 +468,16 @@ async function shareToKakao() {
 
 
 function setupReveal() {
-  const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
-    if (entry.isIntersecting) entry.target.classList.add("visible");
-  }), { threshold: 0.12 });
-  $$(".reveal").forEach((element) => observer.observe(element));
+  const observer = new IntersectionObserver((entries, self) => {
+    // 같은 순간에 함께 들어온 것들만 시차를 둡니다.
+    // 고정 지연을 요소마다 박아 두면, 혼자 들어올 때도 괜히 기다렸다 나타납니다.
+    entries.filter((entry) => entry.isIntersecting).forEach((entry, index) => {
+      entry.target.style.transitionDelay = `${Math.min(index, 4) * 90}ms`;
+      entry.target.classList.add("visible");
+      self.unobserve(entry.target);   // 한 번 뜨면 다시 감추지 않습니다
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
+  $$(".reveal > *").forEach((element) => observer.observe(element));
 }
 
 hydrateInvitation();
