@@ -21,14 +21,14 @@ const CONFIG = {
       { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
       { label: "주차 위치", text: "지하 1층 · 지하 2층\n기둥 A·B·C·D 구역 (20번 ~ 60번 사이)" },
       { label: "예식장까지", text: "주차 후 현대백화점 방향으로 직진하시면\n천호역 10번 출구 앞에 예식장이 있습니다." },
-      { label: "주차 등록", text: "2층 연회장 입구에서 등록하시면 1시간 30분 무료입니다." },
+      { label: "주차 등록", text: "2층 연회장 입구에서 등록하시면\n1시간 30분 무료입니다." },
     ] },
   ],
   // INFORMATION 캐러셀 — 지금은 더미 데이터입니다. 실제 안내로 교체하세요.
   information: [
-    { photo: "./images/info/1.jpg", caption: "Reception", text: "식사는 2층 연회장에 준비되어 있습니다.\n오후 1시 30분부터 3시 30분까지, 예식 전후 2시간 동안 이용하실 수 있습니다." },
-    { photo: "./images/info/2.jpg", caption: "ATM", text: "1층 출입구 왼쪽, 계단과 엘리베이터 사이 공간에\nATM 2대가 마련되어 있습니다." },
-    { photo: "./images/info/3.jpg", caption: "Thank You", text: "먼 길 찾아와 주시는 마음에 미리 감사드립니다.\n따뜻한 축복 속에서 첫걸음을 내딛겠습니다." },
+    { photo: "./images/info/1.jpg", caption: "Reception", text: "식사는 2층 연회장에 준비되어 있습니다.\n오후 1시 30분부터 3시 30분까지,\n예식 전후 2시간 동안 이용하실 수 있습니다." },
+    { photo: "./images/info/2.jpg", caption: "ATM", text: "1층 출입구 왼쪽,\n계단과 엘리베이터 사이 공간에\nATM 2대가 마련되어 있습니다." },
+    { photo: "./images/info/3.jpg", caption: "Thank You", text: "먼 길 찾아와 주시는 마음에\n미리 감사드립니다.\n따뜻한 축복 속에서 첫걸음을 내딛겠습니다." },
   ],
   // Kakao Developers에서 발급받은 JavaScript 키. 카카오톡 공유와 지도에 함께 쓰입니다.
   // 비워두면 공유는 기기 공유 창으로, 지도는 키가 필요 없는 구글 지도로 대체됩니다.
@@ -158,6 +158,7 @@ function setupProfiles() {
     return;
   }
 
+  const wrap = $(".profiles");
   let showBaby = false;
   function render() {
     cards.forEach((card) => {
@@ -165,8 +166,14 @@ function setupProfiles() {
       card.setAttribute("aria-label", showBaby ? "지금 모습 보기" : "아기 때 모습 보기");
       card.setAttribute("aria-pressed", String(showBaby));
     });
+    wrap.classList.toggle("is-baby", showBaby);
   }
-  cards.forEach((card) => card.addEventListener("click", () => { showBaby = !showBaby; render(); }));
+  cards.forEach((card) => card.addEventListener("click", () => {
+    showBaby = !showBaby;
+    // 한 번 눌러 본 사람에게는 더 권하지 않습니다. 어른 사진으로 돌아와도 다시 깜빡이지 않습니다.
+    wrap.classList.add("is-seen");
+    render();
+  }));
   render();
 }
 
