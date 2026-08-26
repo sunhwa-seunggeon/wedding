@@ -32,6 +32,9 @@ const CONFIG = {
   ],
   // Kakao Developers에서 발급받은 JavaScript 키. 카카오톡 공유와 지도에 함께 쓰입니다.
   // 비워두면 공유는 기기 공유 창으로, 지도는 키가 필요 없는 구글 지도로 대체됩니다.
+  // 공유에 쓰는 정식 주소. location.href 를 쓰면 페이지를 연 주소가 그대로 나가서
+  // localhost 나 ?t=1 같은 임시 주소, 예전 도메인이 링크로 박힐 수 있습니다.
+  siteUrl: "https://sunhwa-seunggeon.github.io/wedding/",
   shareImage: "./images/share.jpg",   // 카카오·OG 공유 카드에 쓰는 사진
   kakaoJsKey: "0f0f31b7b43376570ea7609128c57a8f",
   family: {
@@ -412,12 +415,12 @@ function setupGallery() {
 }
 
 async function shareInvitation() {
-  const data = { title: SHARE_TITLE, text: SHARE_DESCRIPTION, url: location.href };
+  const data = { title: SHARE_TITLE, text: SHARE_DESCRIPTION, url: SHARE_URL };
   try {
     if (navigator.share) await navigator.share(data);
-    else await copyText(location.href, "초대장 주소를 복사했습니다.");
+    else await copyText(SHARE_URL, "초대장 주소를 복사했습니다.");
   } catch (error) {
-    if (error.name !== "AbortError") copyText(location.href, "초대장 주소를 복사했습니다.");
+    if (error.name !== "AbortError") copyText(SHARE_URL, "초대장 주소를 복사했습니다.");
   }
 }
 
@@ -455,6 +458,7 @@ function loadKakaoSdk() {
 }
 
 // 공유 문구는 여기서 한 번만 만듭니다. 카카오 카드와 웹 공유가 같은 문장을 씁니다.
+const SHARE_URL = CONFIG.siteUrl || location.href;
 const SHARE_TITLE = `${CONFIG.groom} \u2665 ${CONFIG.bride} 결혼합니다`;
 const SHARE_DESCRIPTION = `${weddingDateText} ${new Intl.DateTimeFormat("ko-KR", { hour: "numeric", minute: "2-digit", timeZone: WEDDING_TIME_ZONE }).format(weddingDate)}`;
 
@@ -464,13 +468,13 @@ async function shareToKakao() {
     // 카카오 피드 카드: 큰 사진 + 제목 + 날짜 한 줄 + 버튼.
     // imageUrl 은 카카오 서버가 직접 긁어가므로 반드시 공개된 절대 주소여야 합니다
     // (localhost 에서는 사진이 비어 보이는 게 정상입니다).
-    const link = { mobileWebUrl: location.href, webUrl: location.href };
+    const link = { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL };
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
         title: SHARE_TITLE,
         description: SHARE_DESCRIPTION,
-        imageUrl: new URL(CONFIG.shareImage, location.href).href,
+        imageUrl: new URL(CONFIG.shareImage, SHARE_URL).href,
         link,
       },
       buttons: [{ title: "청첩장 보기", link }],
@@ -511,5 +515,5 @@ setInterval(updateCountdown, 60000);
 $(".scroll-cue").addEventListener("click", () => $(".greeting").scrollIntoView());
 $("#copyAddress").addEventListener("click", () => copyText(CONFIG.address, "주소를 복사했습니다."));
 $("#kakaoShare").addEventListener("click", shareToKakao);
-$("#copyUrl").addEventListener("click", () => copyText(location.href, "초대장 주소를 복사했습니다."));
+$("#copyUrl").addEventListener("click", () => copyText(SHARE_URL, "초대장 주소를 복사했습니다."));
 // 인트로 애니메이션(봉투 열림 → 편지 올라옴)이 끝난 뒤 걷어냅니다.
