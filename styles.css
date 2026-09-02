@@ -77,8 +77,11 @@ h2 { margin: 0; }
    내용(절대 위치 이미지)에 맞춰 폭이 0 으로 줄어듭니다. */
 .profile__card { display:block; position:relative; width:100%; aspect-ratio:1; overflow:hidden; padding:0; border:0; background:#eee7d5; cursor:pointer; }
 .profile__card::after { content:""; position:absolute; inset:0; border:1px solid transparent; transition:border-color .25s; }
-/* 아기 사진이 떠 있는 동안에는 두 장 모두 테두리가 생깁니다 — 한 장만 눌러도 둘 다 바뀌므로. */
-.profile__card:hover::after,
+/* 테두리는 아기 사진이 떠 있는 동안에만 — 두 장 모두 생깁니다(한 장만 눌러도 둘 다 바뀌므로).
+   :hover 는 뺐습니다. 마우스를 올려도 테두리가 생기고, 클릭한 뒤에도 커서가 카드 위에
+   남아 있어 누른 쪽만 계속 붉게 보였습니다.
+   :focus-visible 은 남깁니다 — 키보드로 이동할 때만 잡히고(마우스 클릭에는 반응하지 않음)
+   이게 없으면 키보드 사용자가 지금 어느 카드에 있는지 알 수 없습니다. */
 .profile__card:focus-visible::after,
 .profiles.is-baby .profile__card::after { border-color:rgba(80,5,12,.45); }
 .profile__card:focus { outline:none; }
@@ -90,23 +93,38 @@ h2 { margin: 0; }
    두 얼굴이 겹쳐 보이는 시간을 짧게 스쳐 지나가게 하기 위해서입니다.
    첫 클릭 뒤에는 .is-seen 이 붙어 이 미리보기가 아예 멈춥니다.
    아기 사진이 떠 있는 상태(.is-baby)에서는 반대쪽 사진이 비치지 않도록 끕니다. */
-.profiles:not(.is-baby):not(.is-seen) .profile__photo:not(.is-active) { animation:babyPeek 1.5s ease-in-out infinite; }
+.profiles:not(.is-baby):not(.is-seen) .profile__photo:not(.is-active) { animation:babyPeek 1.6s linear infinite; }
 /* 액자도 같은 박자로 아주 살짝 부풀었다 돌아옵니다. 사진이 떠오르는 순간과 겹쳐야 하므로
-   babyPeek 과 키프레임 구간(30/45/55/70%)을 똑같이 맞춰 둡니다. */
-.profiles:not(.is-baby):not(.is-seen) .profile__card { animation:cardPeek 1.5s ease-in-out infinite; }
-@keyframes cardPeek { 0%, 30% { transform:scale(1); } 45%, 55% { transform:scale(1.035); } 70%, 100% { transform:scale(1); } }
+   babyPeek 과 키프레임 구간(0/64/67%)과 주기(1.6s)를 똑같이 맞춰 둡니다. */
+.profiles:not(.is-baby):not(.is-seen) .profile__card { animation:cardPeek 1.6s linear infinite; }
+@keyframes cardPeek {
+  0%   { transform:scale(1); animation-timing-function:ease-in; }
+  64%  { transform:scale(1.04); animation-timing-function:steps(1,end); }
+  67%  { transform:scale(1); }
+  100% { transform:scale(1); }
+}
 /* 한 번 눌러 본 뒤에는 유도를 멈춥니다 — 이미 아는 동작을 계속 권할 이유가 없습니다.
    커서는 남기되 깜빡임만 꺼서 "누를 수 있다"는 표시는 유지합니다. */
 .profiles.is-seen .profile__cue { animation:none; }
-@keyframes babyPeek { 0%, 30% { opacity:0; } 45%, 55% { opacity:.3; } 70%, 100% { opacity:0; } }
+/* 좌우 대칭으로 부풀었다 꺼지지 않고, 0->64% 동안 천천히 차오른 뒤 한 프레임에 툭 끊깁니다.
+   구간마다 타이밍이 달라야 하므로 키프레임 안에서 animation-timing-function 을 지정합니다.
+   (ease-in = 처음엔 느리고 뒤로 갈수록 빨라짐 / steps(1,end) = 다음 구간을 순간 이동) */
+@keyframes babyPeek {
+  0%   { opacity:0; animation-timing-function:ease-in; }
+  64%  { opacity:.32; animation-timing-function:steps(1,end); }
+  67%  { opacity:0; }
+  100% { opacity:0; }
+}
 /* 누를 수 있다는 신호 — 사진 오른쪽 아래에서 깜빡이는 커서.
    갤러리 REC 점과 같은 깜빡임 어휘입니다. 어떤 사진 위에 놓여도 읽히도록
    가넷 채움 + 종이색 외곽선을 paint-order 로 글자 뒤에 깝니다.
    prefers-reduced-motion 에서는 전역 규칙이 animation 을 끄므로 멈춘 채로 보입니다. */
-.profile__cue { position:absolute; right:7px; bottom:7px; width:17px; height:17px; fill:var(--garnet); stroke:var(--paper); stroke-width:1.8; stroke-linejoin:round; paint-order:stroke fill; animation:tapCue 1.5s ease-in-out infinite; }
+.profile__cue { position:absolute; right:7px; bottom:7px; width:17px; height:17px; fill:var(--garnet); stroke:var(--paper); stroke-width:1.8; stroke-linejoin:round; paint-order:stroke fill; animation:tapCue 1.6s linear infinite; }
 @keyframes tapCue {
-  0%, 100% { opacity:1; transform:translate(0,0) scale(1); }
-  45%      { opacity:.35; transform:translate(-2px,-2px) scale(.88); }
+  0%   { opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in; }
+  64%  { opacity:.3; transform:translate(-2.5px,-2.5px) scale(.84); animation-timing-function:steps(1,end); }
+  67%  { opacity:1; transform:translate(0,0) scale(1); }
+  100% { opacity:1; transform:translate(0,0) scale(1); }
 }
 .profile figcaption { margin-top:12px; text-align:center; }
 .profile figcaption i { margin-right:4px; color:var(--muted); font:500 italic 12.5px/1 var(--serif-i); letter-spacing:.04em; }
@@ -154,14 +172,18 @@ h2 { margin: 0; }
 .factsheet div:first-child { border-top:1px solid var(--line); }
 .factsheet dt { color:var(--muted); font-size:10.5px; letter-spacing:.18em; }
 .factsheet dd { margin:0; color:var(--ink); font-size:14px; font-weight:500; letter-spacing:.02em; }
-/* 티켓 PNG 는 톱니 모양 테두리가 투명해서 비율 그대로 두고 그림자도 넣지 않습니다.
-   (사각형 그림자를 넣으면 톱니 밖으로 네모가 비쳐 보입니다.) */
-.ticket-card { width:min(76%, 292px); margin:0 auto 30px; }
+/* 이 PNG 는 테두리가 투명해서 비율 그대로 두고 그림자도 넣지 않습니다.
+   (사각형 그림자를 넣으면 투명한 바깥으로 네모가 비쳐 보입니다.)
+   letter.png 는 거의 정사각(0.96)이라, 세로로 길던 ticket.png(0.64)와
+   같은 폭이면 존재감이 확 줄어서 폭을 조금 키웠습니다.
+   ticket.png 로 되돌릴 때는 min(76%, 292px) 로 함께 되돌리세요. */
+.ticket-card { width:min(94%, 360px); margin:0 auto 14px; }
 .ticket-card img { display:block; width:100%; height:auto; }
-.handwritten-note { width:78%; margin:0 auto 38px; }
-/* 손글씨 PNG 는 글씨 모양이 전부 알파 채널에 들어 있고 RGB 는 단색입니다.
-   그래서 획 색을 가넷으로 칠해 구워 두었습니다 — filter 도 blend 도 필요 없습니다.
-   색을 바꾸려면 알파는 그대로 두고 RGB 만 다시 칠하면 됩니다. */
+.handwritten-note { width:74%; margin:0 auto 38px; }
+/* 손글씨 PNG 는 글씨 모양이 전부 알파 채널에 들어 있고 RGB 는 단색(가넷)입니다.
+   알파에 종이 결 크기의 잡음을 먹여 획 안쪽을 부수고 농도를 낮춰,
+   잉크가 아니라 연필로 그은 것처럼 보이게 구워 두었습니다.
+   색이나 농도를 바꾸려면 알파는 그대로 두고 다시 구우면 됩니다. */
 .handwritten-note img { display:block; width:100%; height:auto; }
 
 
@@ -482,7 +504,7 @@ fieldset input { width: auto; accent-color: var(--olive); }
   .hero__venue { font-size:clamp(8px,2.8vw,10px); }
   .hero__couple-labels { left:8%; right:8%; }
   .greeting { padding-inline:22px; }
-  .handwritten-note { width:min(86%,300px); }
+  .handwritten-note { width:min(80%,275px); }
   .share { padding-inline:22px; }
   dialog { width:calc(100% - 24px); padding-inline:20px; }
 }
