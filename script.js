@@ -14,14 +14,21 @@ const CONFIG = {
   // 오시는 길 안내 — 항목을 자유롭게 추가·삭제하면 화면이 따라옵니다.
   // 교통편은 크게 지하철 / 자차 두 갈래. 갈래 안의 세부 항목만 라벨을 답니다.
   directions: [
-    { label: "지하철", items: [
-      { text: "5호선·8호선 천호역 10번 출구 앞" },
+    { label: "지하철", icon: "subway", items: [
+      // lines 는 노선 번호. 색은 CSS 의 .line-no--5 / --8 이 정합니다.
+      { lines: ["5", "8"], text: "천호역 10번 출구 앞" },
     ] },
-    { label: "자차", items: [
+    { label: "버스", icon: "bus", items: [
+      { text: "천호역 또는 천호사거리 하차" },
+      // tag 는 서울 버스 유형. 색은 CSS 의 .bus-tag[data-tag] 가 정합니다.
+      { tag: "지선", text: "3316, 3411, 3412, 3413, 3414" },
+      { tag: "간선", text: "342, 360, 361, 362, 363, 730" },
+    ] },
+    { label: "자차", icon: "car", items: [
       { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
-      { label: "주차 위치", text: "지하 1층 · 지하 2층\n기둥 A·B·C·D 구역 (20번 ~ 60번 사이)" },
-      { label: "예식장까지", text: "주차 후 현대백화점 방향으로 직진하시면\n천호역 10번 출구 앞에 예식장이 있습니다." },
-      { label: "주차 등록", text: "2층 연회장 입구에서 등록하시면\n1시간 30분 무료입니다." },
+      { label: "주차 위치", text: "지하 1·2층\nA·B·C·D 구역 20~60번 기둥 사이" },
+      { label: "예식장까지", text: "지하통로 도보 5분\n현대백화점 방향 직진 → 천호역 10번 출구" },
+      { label: "주차 등록", text: "2층 연회장 입구에서 차량번호 등록\n1시간 30분 무료" },
     ] },
   ],
   // INFORMATION 캐러셀 — 지금은 더미 데이터입니다. 실제 안내로 교체하세요.
@@ -217,14 +224,28 @@ function fillDateCard() {
 
 
 // 오시는 길 안내 항목.
+// 갈래 제목 옆 아이콘. 선으로만 그려 올리브 라벨과 같은 무게로 보입니다.
+const DIRECTION_ICONS = {
+  subway: '<path d="M6 4.5h12v10a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 14.5z"/><path d="M6 9.5h12"/><path d="M9 13.5h.01M15 13.5h.01"/><path d="M8.5 17 7 20M15.5 17 17 20"/>',
+  bus: '<rect x="4.5" y="4" width="15" height="12" rx="2.5"/><path d="M4.5 10.5h15"/><path d="M8 13.6h.01M16 13.6h.01"/><path d="M7.5 16v2.5M16.5 16v2.5"/>',
+  car: '<path d="M4 14.5h16v3.5h-3v-1.5H7V18H4z"/><path d="M5.5 14.5 7.5 8h9l2 6.5"/><path d="M7.5 11.5h9"/>',
+};
+
 function renderDirections() {
+  const icon = (name) => DIRECTION_ICONS[name]
+    ? `<svg class="direction-group__icon" viewBox="0 0 24 24" aria-hidden="true">${DIRECTION_ICONS[name]}</svg>`
+    : "";
+  // 노선 번호는 색 있는 동그라미로. 실제 노선 색이라 한눈에 어느 선인지 읽힙니다.
+  const lines = (list) => (list || []).map((no) => `<b class="line-no line-no--${no}">${no}</b>`).join("");
+  const tag = (name) => name ? `<b class="bus-tag" data-tag="${name}">${name}</b>` : "";
+
   $("#directions").innerHTML = CONFIG.directions.map((group) => `
     <div class="direction-group">
-      <span class="direction-group__title">${group.label}</span>
+      <span class="direction-group__title">${icon(group.icon)}${group.label}</span>
       ${group.items.map((item) => `
-      <div class="direction">
+      <div class="direction${item.label ? " direction--titled" : ""}">
         ${item.label ? `<span class="direction__label">${item.label}</span>` : ""}
-        <p>${item.text}</p>
+        <p>${lines(item.lines)}${tag(item.tag)}${item.text}</p>
       </div>`).join("")}
     </div>`).join("");
 }
