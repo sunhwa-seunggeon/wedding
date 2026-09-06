@@ -5,3 +5,6 @@ Thumbs.db
 
 # 원본 사진 (웹용은 images/gallery/ 에 있음)
 photos/
+
+# 갤러리 원본 (리사이즈 결과만 커밋)
+images/gallery/new/

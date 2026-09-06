@@ -70,12 +70,12 @@ const CONFIG = {
 };
 
 const GALLERY_PHOTOS = [
-  "DSC00018_1.jpg", "DSC00059_1.jpg", "DSC00229_1.jpg", "DSC00609_1.jpg", "DSC00700_1.jpg",
-  "DSC00749_1.jpg", "DSC00913_1.jpg", "DSC01064_1.jpg", "DSC01246_1.jpg", "DSC01303_1.jpg",
-  "DSC01339_1.jpg", "DSC01369_1.jpg", "DSC01503_1.jpg", "DSC01655_1.jpg", "DSC01692_1.jpg",
-  "DSC02348_1.jpg", "DSC02453_1.jpg", "DSC02506_1.jpg", "DSC02548_1.jpg", "DSC02694_1.jpg",
-  "DSC02767_1.jpg", "DSC03123_1.jpg", "DSC03219_1.jpg", "DSC03299_1.jpg", "DSC03437_1.jpg",
-  "DSC03660_1.jpg", "DSC03874_1.jpg", "DSC03902_1.jpg", "DSC04067_1.jpg", "DSC04115_1.jpg",
+  "01.jpg", "02.jpg", "03.jpg", "04.jpg", "05.jpg",
+  "06.jpg", "07.jpg", "08.jpg", "09.jpg", "10.jpg",
+  "11.jpg", "12.jpg", "13.jpg", "14.jpg", "15.jpg",
+  "16.jpg", "17.jpg", "18.jpg", "19.jpg", "20.jpg",
+  "21.jpg", "22.jpg", "23.jpg", "24.jpg", "25.jpg",
+  "26.jpg", "27.jpg", "28.jpg", "29.jpg", "30.jpg",
 ];
 
 const $ = (selector, root = document) => root.querySelector(selector);
