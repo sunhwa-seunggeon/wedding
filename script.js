@@ -24,6 +24,9 @@ const CONFIG = {
       { tag: "지선", text: "3316, 3411, 3412, 3413, 3414" },
       { tag: "간선", text: "342, 360, 361, 362, 363, 730" },
     ] },
+    { label: "기차", icon: "train", items: [
+      { label: "SRT", text: "수서역 하차 후 천호역으로 이동" },
+    ] },
     { label: "자차", icon: "car", items: [
       { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
       { label: "주차 위치", text: "지하 1·2층\nA·B·C·D 구역 20~60번 기둥 사이" },
@@ -228,6 +231,7 @@ function fillDateCard() {
 const DIRECTION_ICONS = {
   subway: '<path d="M6 4.5h12v10a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 14.5z"/><path d="M6 9.5h12"/><path d="M9 13.5h.01M15 13.5h.01"/><path d="M8.5 17 7 20M15.5 17 17 20"/>',
   bus: '<rect x="4.5" y="4" width="15" height="12" rx="2.5"/><path d="M4.5 10.5h15"/><path d="M8 13.6h.01M16 13.6h.01"/><path d="M7.5 16v2.5M16.5 16v2.5"/>',
+  train: '<path d="M4 16.5V9a1 1 0 0 1 1-1h6c4 0 7.6 3 8.5 6.4v2.1z"/><path d="M4 12.4h6.5"/><path d="M2.5 19.5h19"/>',
   car: '<path d="M4 14.5h16v3.5h-3v-1.5H7V18H4z"/><path d="M5.5 14.5 7.5 8h9l2 6.5"/><path d="M7.5 11.5h9"/>',
 };
 
