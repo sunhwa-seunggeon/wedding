@@ -174,8 +174,8 @@ h2 { margin: 0; }
 .factsheet dd { margin:0; color:var(--ink); font-size:14px; font-weight:500; letter-spacing:.02em; }
 /* 이 PNG 는 테두리가 투명해서 비율 그대로 두고 그림자도 넣지 않습니다.
    (사각형 그림자를 넣으면 투명한 바깥으로 네모가 비쳐 보입니다.)
-   letter.png 는 거의 정사각(0.96)이라, 세로로 길던 ticket.png(0.64)와
-   같은 폭이면 존재감이 확 줄어서 폭을 조금 키웠습니다.
+   letter.png 는 783x1032(비율 0.76). ticket.png(0.64)보다 가로가 넓어
+   같은 폭이면 존재감이 줄어서 폭을 조금 키웠습니다.
    ticket.png 로 되돌릴 때는 min(76%, 292px) 로 함께 되돌리세요. */
 .ticket-card { width:min(94%, 360px); margin:0 auto 14px; }
 .ticket-card img { display:block; width:100%; height:auto; }
