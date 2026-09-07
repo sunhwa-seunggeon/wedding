@@ -15,7 +15,11 @@
     <title>김승건 ♥ 강선화, 결혼합니다</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Dancing+Script:wght@600;700&family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- 장식용 라틴 서체(Our Wedding 등)는 display=block — 늦게 도착해도 고딕으로 한 번 그렸다가
+         바뀌는(FOUT) 대신 잠깐 비워 뒀다가 제 서체로 한 번만 그립니다. 라틴 서브셋이라 금방 옵니다. -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Dancing+Script:wght@600;700&display=block" rel="stylesheet" />
+    <!-- 본문 한글은 용량이 커서 block 이면 글이 오래 비어 보입니다. 여기는 swap 유지. -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./script.js" defer></script>
   </head>
