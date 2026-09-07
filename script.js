@@ -63,7 +63,6 @@ const CONFIG = {
   ],
   // side 가 탭(신랑 측 / 신부 측), role 은 카드 안 작은 라벨입니다.
   // 전화번호는 위 contacts 에서 이름으로 찾아 쓰므로 여기 적지 않습니다.
-  // pay 에 카카오페이 송금 링크를 넣으면 pay 버튼이 생기고, 비우면 버튼이 나오지 않습니다.
   accounts: [
     { side: "신랑", role: "신랑", name: "김승건" },
     { side: "신랑", role: "혼주", name: "김재국" },
@@ -542,7 +541,6 @@ async function applyPrivateData() {
     const found = accounts[item.name] || {};
     item.bank = found.bank || "";
     item.number = found.number || "";
-    item.pay = found.pay || "";
   });
 }
 
