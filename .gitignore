@@ -8,3 +8,6 @@ photos/
 
 # 갤러리 원본 (리사이즈 결과만 커밋)
 images/gallery/new/
+
+# 전화번호·계좌 (배포 때 Actions 시크릿으로 생성)
+private.json

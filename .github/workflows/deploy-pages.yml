@@ -22,6 +22,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # 전화번호 · 계좌는 저장소에 두지 않고 여기서만 파일로 만듭니다.
+      # 시크릿 PRIVATE_DATA 에 JSON 한 덩어리를 넣어 두면 됩니다 (형식은 private.example.json 참고).
+      # 주의: 결과물은 청첩장 페이지에 그대로 실리므로 사이트 방문자에게는 보입니다.
+      #       이 단계가 막아 주는 것은 "저장소 · git 히스토리에 남는 것" 입니다.
+      - name: private.json 만들기
+        env:
+          PRIVATE_DATA: ${{ secrets.PRIVATE_DATA }}
+        run: |
+          if [ -z "$PRIVATE_DATA" ]; then
+            echo "::error::시크릿 PRIVATE_DATA 가 비어 있습니다. 연락처·계좌가 빈 칸으로 배포됩니다."
+            exit 1
+          fi
+          printf '%s' "$PRIVATE_DATA" > private.json
+          python3 -c "import json;json.load(open('private.json',encoding='utf-8'))"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

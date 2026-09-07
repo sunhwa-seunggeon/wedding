@@ -51,24 +51,26 @@ const CONFIG = {
     groomFather: "김재국", groomMother: "송경희",
     brideFather: "강승묵", brideMother: "심정미",
   },
+  // phone / bank / number 는 여기 적지 않습니다. private.json 에서 이름으로 찾아 채웁니다.
+  // (배포 때 GitHub Actions 시크릿으로 만들어지고, 저장소에는 남지 않습니다.)
   contacts: [
-    { label: "신랑", name: "김승건", phone: "010-0000-0000" },
-    { label: "신부", name: "강선화", phone: "010-0000-0000" },
-    { label: "신랑 아버지", name: "김재국", phone: "010-0000-0000" },
-    { label: "신랑 어머니", name: "송경희", phone: "010-0000-0000" },
-    { label: "신부 아버지", name: "강승묵", phone: "010-0000-0000" },
-    { label: "신부 어머니", name: "심정미", phone: "010-0000-0000" },
+    { label: "신랑", name: "김승건" },
+    { label: "신부", name: "강선화" },
+    { label: "신랑 아버지", name: "김재국" },
+    { label: "신랑 어머니", name: "송경희" },
+    { label: "신부 아버지", name: "강승묵" },
+    { label: "신부 어머니", name: "심정미" },
   ],
   // side 가 탭(신랑 측 / 신부 측), role 은 카드 안 작은 라벨입니다.
   // 전화번호는 위 contacts 에서 이름으로 찾아 쓰므로 여기 적지 않습니다.
   // pay 에 카카오페이 송금 링크를 넣으면 pay 버튼이 생기고, 비우면 버튼이 나오지 않습니다.
   accounts: [
-    { side: "신랑", role: "신랑", name: "김승건", bank: "은행", number: "000-0000-0000", pay: "" },
-    { side: "신랑", role: "혼주", name: "김재국", bank: "은행", number: "000-0000-0000", pay: "" },
-    { side: "신랑", role: "혼주", name: "송경희", bank: "은행", number: "000-0000-0000", pay: "" },
-    { side: "신부", role: "신부", name: "강선화", bank: "은행", number: "000-0000-0000", pay: "" },
-    { side: "신부", role: "혼주", name: "강승묵", bank: "은행", number: "000-0000-0000", pay: "" },
-    { side: "신부", role: "혼주", name: "심정미", bank: "은행", number: "000-0000-0000", pay: "" },
+    { side: "신랑", role: "신랑", name: "김승건" },
+    { side: "신랑", role: "혼주", name: "김재국" },
+    { side: "신랑", role: "혼주", name: "송경희" },
+    { side: "신부", role: "신부", name: "강선화" },
+    { side: "신부", role: "혼주", name: "강승묵" },
+    { side: "신부", role: "혼주", name: "심정미" },
   ],
 };
 
@@ -293,8 +295,9 @@ function renderContacts() {
   $("#contactList").innerHTML = CONFIG.contacts.map((item) => `
     <div class="contact-row">
       <span>${item.label} <b>${item.name}</b></span>
+      ${item.phone ? `
       <a href="tel:${item.phone.replaceAll("-", "")}" aria-label="${item.label}에게 전화">전화</a>
-      <a href="sms:${item.phone.replaceAll("-", "")}" aria-label="${item.label}에게 문자">문자</a>
+      <a href="sms:${item.phone.replaceAll("-", "")}" aria-label="${item.label}에게 문자">문자</a>` : ""}
     </div>`).join("");
 }
 
@@ -315,7 +318,7 @@ function renderAccounts() {
           <span class="account-row__bank">${item.bank}</span>
           <span class="account-row__num">${item.number}</span>
         </span>
-        <button class="account-copy" type="button" data-account="${item.number}">COPY ${COPY_ICON}</button>
+        ${item.number ? `<button class="account-copy" type="button" data-account="${item.number}">COPY ${COPY_ICON}</button>` : ""}
       </div>`).join("");
     $$("[data-account]").forEach((button) => button.addEventListener("click", () => copyText(button.dataset.account, "계좌번호를 복사했습니다.")));
   }
@@ -523,14 +526,33 @@ function setupReveal() {
   $$(".reveal > *").forEach((element) => observer.observe(element));
 }
 
+// 전화번호·계좌는 private.json 에서 읽어 CONFIG 에 채웁니다.
+// 이 파일은 .gitignore 에 있어 저장소에 올라가지 않고, 배포할 때 워크플로가 시크릿으로 만듭니다.
+// 파일이 없으면(=로컬에서 안 만들었으면) 해당 줄만 비어 보이고 나머지는 정상 동작합니다.
+async function applyPrivateData() {
+  let data = {};
+  try {
+    const response = await fetch("./private.json", { cache: "no-store" });
+    if (response.ok) data = await response.json();
+  } catch { /* 파일이 없으면 그냥 빈 값으로 둡니다 */ }
+  const phones = data.phones || {};
+  const accounts = data.accounts || {};
+  CONFIG.contacts.forEach((item) => { item.phone = phones[item.name] || ""; });
+  CONFIG.accounts.forEach((item) => {
+    const found = accounts[item.name] || {};
+    item.bank = found.bank || "";
+    item.number = found.number || "";
+    item.pay = found.pay || "";
+  });
+}
+
 hydrateInvitation();
 renderMap();
 fillDateCard();
 renderDirections();
 setupInformation();
 setupProfiles();
-renderContacts();
-renderAccounts();
+applyPrivateData().then(() => { renderContacts(); renderAccounts(); });
 setupDialogs();
 setupGallery();
 fillFilmEdge();
