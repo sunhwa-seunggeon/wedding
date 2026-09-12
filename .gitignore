@@ -11,3 +11,6 @@ images/gallery/new/
 
 # 전화번호·계좌 (배포 때 Actions 시크릿으로 생성)
 private.json
+
+# 이미지 교체 전 백업본
+images/*-backup.*
