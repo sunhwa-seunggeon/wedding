@@ -93,27 +93,27 @@ h2 { margin: 0; }
    두 얼굴이 겹쳐 보이는 시간을 짧게 스쳐 지나가게 하기 위해서입니다.
    첫 클릭 뒤에는 .is-seen 이 붙어 이 미리보기가 아예 멈춥니다.
    아기 사진이 떠 있는 상태(.is-baby)에서는 반대쪽 사진이 비치지 않도록 끕니다. */
-.profiles:not(.is-baby):not(.is-seen) .profile__photo:not(.is-active) { animation:babyPeek 1.6s linear infinite; }
+.profiles:not(.is-baby):not(.is-seen) .profile__photo:not(.is-active) { animation:babyPeek 1.8s linear infinite; }
 /* 액자도 같은 박자로 아주 살짝 부풀었다 돌아옵니다. 사진이 떠오르는 순간과 겹쳐야 하므로
-   babyPeek 과 키프레임 구간(0/62/76%)과 주기(1.6s)를 똑같이 맞춰 둡니다. */
-.profiles:not(.is-baby):not(.is-seen) .profile__card { animation:cardPeek 1.6s linear infinite; }
+   babyPeek 과 키프레임 구간(0/55/75%)과 주기(1.8s)를 똑같이 맞춰 둡니다. */
+.profiles:not(.is-baby):not(.is-seen) .profile__card { animation:cardPeek 1.8s linear infinite; }
 @keyframes cardPeek {
   0%   { transform:scale(1); animation-timing-function:ease-in; }
-  62%  { transform:scale(1.04); animation-timing-function:ease-out; }
-  76%  { transform:scale(1); }
+  55%  { transform:scale(1.04); animation-timing-function:ease-out; }
+  75%  { transform:scale(1); }
   100% { transform:scale(1); }
 }
 /* 한 번 눌러 본 뒤에는 유도를 멈춥니다 — 이미 아는 동작을 계속 권할 이유가 없습니다.
    커서는 남기되 깜빡임만 꺼서 "누를 수 있다"는 표시는 유지합니다. */
 .profiles.is-seen .profile__cue { animation:none; }
 /* 좌우 대칭으로 부풀었다 꺼지지 않습니다. 0->62% 동안 천천히 차오르고(꾸움),
-   62->76% 에 ease-out 으로 내려앉습니다(뻐억). 내려앉는 구간이 한 프레임이면 "뻑" 으로
-   너무 짧게 끊겨서, 224ms 로 늘려 놓았습니다.
+   55->75% 에 ease-out 으로 내려앉습니다(뻐어억). 내려앉는 구간이 한 프레임이면 "뻑" 으로
+   너무 짧게 끊겨서, 360ms 로 늘려 놓았습니다.
    구간마다 타이밍이 달라야 하므로 키프레임 안에서 animation-timing-function 을 지정합니다. */
 @keyframes babyPeek {
   0%   { opacity:0; animation-timing-function:ease-in; }
-  62%  { opacity:.32; animation-timing-function:ease-out; }
-  76%  { opacity:0; }
+  55%  { opacity:.32; animation-timing-function:ease-out; }
+  75%  { opacity:0; }
   100% { opacity:0; }
 }
 /* 누를 수 있다는 신호 — 커서가 사진 "밖에서 안으로" 들어와 한 번 누르고 사라집니다.
@@ -121,16 +121,16 @@ h2 { margin: 0; }
    목표를 향해 움직이는 것 자체가 "여기로 가서 눌러라" 로 읽힙니다.
    어떤 사진 위에 놓여도 보이도록 가넷 채움 + 종이색 외곽선을 paint-order 로 뒤에 깝니다.
    prefers-reduced-motion 에서는 전역 규칙이 animation 을 꺼서 제자리에 멈춰 있습니다. */
-.profile__cue { position:absolute; right:7px; bottom:7px; width:17px; height:17px; fill:var(--garnet); stroke:var(--paper); stroke-width:1.8; stroke-linejoin:round; paint-order:stroke fill; animation:tapCue 1.6s linear infinite; }
+.profile__cue { position:absolute; right:7px; bottom:7px; width:17px; height:17px; fill:var(--garnet); stroke:var(--paper); stroke-width:1.8; stroke-linejoin:round; paint-order:stroke fill; animation:tapCue 1.8s linear infinite; }
 @keyframes tapCue {
-  /* 0->46% 사진 밖(오른쪽 아래)에서 미끄러져 들어오며 감속 */
+  /* 0->41% 사진 밖(오른쪽 아래)에서 미끄러져 들어오며 감속 */
   0%   { opacity:0; transform:translate(24px,24px) scale(1); animation-timing-function:ease-out; }
-  16%  { opacity:1; transform:translate(17px,17px) scale(1); animation-timing-function:ease-out; }
-  46%  { opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in; }
-  /* 46->62% 누르고(꾸움), 62->76% 떼는 데 시간을 씁니다(뻐억) */
-  62%  { opacity:.3; transform:translate(-2.5px,-2.5px) scale(.84); animation-timing-function:ease-out; }
-  76%  { opacity:1; transform:translate(0,0) scale(1); }
-  90%  { opacity:1; transform:translate(0,0) scale(1); }
+  14%  { opacity:1; transform:translate(17px,17px) scale(1); animation-timing-function:ease-out; }
+  41%  { opacity:1; transform:translate(0,0) scale(1); animation-timing-function:ease-in; }
+  /* 41->55% 누르고(꾸움), 55->75% 떼는 데 시간을 씁니다(뻐어억) */
+  55%  { opacity:.3; transform:translate(-2.5px,-2.5px) scale(.84); animation-timing-function:ease-out; }
+  75%  { opacity:1; transform:translate(0,0) scale(1); }
+  89%  { opacity:1; transform:translate(0,0) scale(1); }
   /* 끝에서 지워야 다음 바퀴가 밖에서 다시 들어올 때 순간 이동으로 보이지 않습니다 */
   100% { opacity:0; transform:translate(0,0) scale(1); }
 }
