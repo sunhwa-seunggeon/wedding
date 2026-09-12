@@ -26,11 +26,11 @@ button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { color: inherit; }
 
-.hero { position:relative; width:100%; min-height:0; aspect-ratio:.68; margin:0; color:var(--ink); background:var(--paper); overflow:hidden; }
+.hero { position:relative; width:100%; min-height:0; aspect-ratio:.68; margin:0; color:var(--ink); background:var(--paper-2); overflow:hidden; }
 .hero__photo { position: absolute; inset: 0; background: url("./images/hero-room.jpg") center center/cover no-repeat; filter: sepia(.26) contrast(1.02) brightness(1.06); animation: heroZoom 12s ease-out both; }
 /* 위쪽은 옅은 베이지 베일(가넷 글자가 사진 위에서 확실히 읽히도록),
    아래쪽은 종이색으로 완전히 녹아들어 다음 섹션과 경계가 없습니다. */
-.hero__shade { position:absolute; inset:0; background:linear-gradient(180deg, rgba(252,248,236,.5) 0%, rgba(252,248,236,.2) 26%, rgba(252,248,236,0) 46%, rgba(252,248,236,.5) 72%, rgba(252,248,236,.9) 88%, var(--paper) 100%); }
+.hero__shade { position:absolute; inset:0; background:linear-gradient(180deg, rgba(246,241,226,.5) 0%, rgba(246,241,226,.2) 26%, rgba(246,241,226,0) 46%, rgba(246,241,226,.5) 72%, rgba(241,236,222,.92) 86%, #f1ecde 95%, #f1ecde 100%); }
 @keyframes heroZoom { from { transform: scale(1.08); } to { transform: scale(1); } }
 .hero__content { position:absolute; z-index:2; top:5.5%; left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center; }
 .hero__couple-labels { position:absolute; z-index:3; top:82%; left:10%; right:10%; display:flex; justify-content:space-between; text-align:center; text-shadow:0 1px 10px rgba(252,248,236,.95); }
@@ -53,13 +53,26 @@ button { color: inherit; }
    multiply 로 겹치므로 이미지는 흑백 + 평균 밝기 250 으로 구워 두었습니다.
    (색이 있는 질감을 그대로 곱하면 --paper-2 위에 색이 두 번 얹혀 누레집니다.)
    512px 미러 타일이라 이음매가 없습니다. */
-.gallery,
-.location,
-.account {
+.greeting,
+.date-section,
+.info,
+.closing {
   background-color: var(--paper-2);
   background-image: url("./images/paper.jpg");
   background-size: 512px;
   background-blend-mode: multiply;
+}
+/* 히어로 사진은 아래로 갈수록 이 섹션 색으로 녹아드는데, 바로 아래에서 종이 결이
+   갑자기 시작하면 그 경계가 선으로 보입니다. 첫 섹션만 위 100px 에 평평한 베일을
+   한 겹 덮어 결이 서서히 드러나게 합니다.
+   레이어는 먼저 쓴 것이 위 — 베일(normal) / 종이 결(multiply) / 바탕색 순입니다. */
+.greeting {
+  background-image:
+    linear-gradient(to bottom, #f1ecde 0, rgba(241,236,222,0) 100px),
+    url("./images/paper.jpg");
+  background-size: auto, 512px;
+  background-repeat: no-repeat, repeat;
+  background-blend-mode: normal, multiply;
 }
 /* 섹션 번호 — 제목 이름을 반복하지 않고 진행 위치만 알려 주는 편집용 표시. */
 .section-no { margin:0 0 14px; color:var(--muted); font:500 italic 13px/1 var(--serif-i); letter-spacing:.2em; }
@@ -355,7 +368,7 @@ fieldset input { width: auto; accent-color: var(--olive); }
 .filmstrip__nav--next { right:0; }
 
 /* DATE — D-day + 날짜 한 줄 + 사진 + 한 주 달력 */
-.date-section { padding:96px 30px 92px; background:var(--paper); }
+.date-section { padding:96px 30px 92px; }
 .date-photo { width:min(52%, 190px); margin:0 auto 30px; }
 .date-photo img { display:block; width:100%; aspect-ratio:1; object-fit:cover; filter:grayscale(1) sepia(.28) contrast(1.02); }
 /* 달력 머리글. 아래 요일 줄과 같은 자간 계열로 두되 색을 올려 위계를 만듭니다. */
@@ -386,7 +399,7 @@ fieldset input { width: auto; accent-color: var(--olive); }
 .date-dday { margin:0 0 8px; color:var(--ink); font:300 40px/1 var(--display); letter-spacing:.01em; }
 
 /* INFORMATION — 좌우로 미는 캐러셀. 양옆 슬라이드가 살짝 비쳐 보입니다. */
-.info { padding:92px 0 88px; background:var(--paper); }
+.info { padding:92px 0 88px; }
 /* 좌우 패딩이 양옆 슬라이드를 살짝 보여 주는 장치인데, 14% 면 28% 를 먹어
    375px 화면에서 본문 폭이 236px 밖에 안 남아 문장이 3줄로 쪼개졌습니다. */
 .info-track { display:flex; gap:10px; padding:0 9%; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
