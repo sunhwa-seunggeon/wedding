@@ -25,7 +25,7 @@ const CONFIG = {
       { tag: "간선", text: "342, 360, 361, 362, 363, 730" },
     ] },
     { label: "기차", icon: "train", items: [
-      { label: "SRT", text: "수서역 하차 후 천호역으로 이동" },
+      { label: "KTX", text: "수서역 하차 후 천호역으로 이동" },
     ] },
     { label: "자차", icon: "car", items: [
       { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
