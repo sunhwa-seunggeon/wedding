@@ -16,6 +16,8 @@
   /* Pretendard 는 라턴 글자도 한글과 짝이 맞게 그려져 있어, 숫자·영문까지
      한 서체로 둡니다. 장식용 라턴(--script, --serif-i) 은 따로입니다. */
   --display: "Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif;
+  /* 섯션 제목은 본문을 Pretendard 로 바꾸기 전 서체를 그대로 둡니다. */
+  --title: "Noto Sans KR", sans-serif;
   --serif-i: "Cormorant Garamond", serif;
   --script: "Dancing Script", cursive;
 }
@@ -186,7 +188,7 @@ h2 { margin: 0; }
 .save-date-mark::before,
 .section-title::before { content:""; position:absolute; z-index:0; left:-11px; right:-13px; bottom:-3px; height:19px; background:linear-gradient(90deg, rgba(135,135,45,.15), rgba(135,135,45,.21) 20%, rgba(135,135,45,.18) 78%, rgba(135,135,45,.14)); clip-path:polygon(1% 21%, 8% 10%, 23% 18%, 41% 5%, 62% 14%, 82% 3%, 99% 20%, 97% 78%, 84% 88%, 67% 82%, 49% 96%, 29% 84%, 12% 94%, 0 75%); transform:rotate(-1.5deg) skewX(-5deg); }
 .save-date-mark span,
-.section-title span { position:relative; z-index:1; color:var(--ink); font:700 15px/1 var(--display); letter-spacing:.07em; }
+.section-title span { position:relative; z-index:1; color:var(--ink); font:700 15px/1 var(--title); letter-spacing:.07em; }
 .section-title span { text-transform:uppercase; }
 .greeting { padding-top:82px; padding-bottom:88px; }
 /* 예식 정보 표 — 라벨과 값이 헤어라인으로 나뉘어 훑어보기 쉽습니다. */
