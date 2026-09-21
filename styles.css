@@ -13,7 +13,9 @@
   /* 안내 문구 공통 크기. 고정값으로 두면 좁은 화면에서 문장이 한 번 더 접혀
      마지막 줄에 몇 글자만 매달립니다. 화면 폭을 따라가되 14px 을 넘지 않습니다. */
   --note: min(14px, 3.7vw);
-  --display: "Noto Sans KR", sans-serif;
+  /* Pretendard 는 라턴 글자도 한글과 짝이 맞게 그려져 있어, 숫자·영문까지
+     한 서체로 둡니다. 장식용 라턴(--script, --serif-i) 은 따로입니다. */
+  --display: "Pretendard Variable", Pretendard, "Noto Sans KR", sans-serif;
   --serif-i: "Cormorant Garamond", serif;
   --script: "Dancing Script", cursive;
 }

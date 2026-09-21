@@ -18,8 +18,12 @@
     <!-- 장식용 라틴 서체(Our Wedding 등)는 display=block — 늦게 도착해도 고딕으로 한 번 그렸다가
          바뀌는(FOUT) 대신 잠깐 비워 뒀다가 제 서체로 한 번만 그립니다. 라틴 서브셋이라 금방 옵니다. -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Dancing+Script:wght@600;700&display=block" rel="stylesheet" />
-    <!-- 본문 한글은 용량이 커서 block 이면 글이 오래 비어 보입니다. 여기는 swap 유지. -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet" />
+    <!-- 본문은 Pretendard. dynamic-subset 은 글자 범위별로 쪼개져 있어 쓴 조각만 받고,
+         가변 폰트라 200~700 굵기가 모두 진짜입니다(Noto 는 400/500/600 뿐이라
+         .daystrip__num 200 과 .section-title 700 은 반올림하거나 흔내 낸 것이었습니다).
+         본문 한글은 용량이 커서 block 이면 글이 오래 비어 보입니다. 여기는 swap 유지. -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="./script.js" defer></script>
   </head>
