@@ -419,32 +419,27 @@ fieldset input { width: auto; accent-color: var(--olive); }
 
 /* WEDDING LOCATION — 지도 박스(지도 + 주소 한 줄) + 라벨 붙은 안내 + 지도 앱 버튼 3개 */
 .location { padding:92px 0 88px; color:var(--ink); }
-.location__head { margin:0; padding:0 30px 22px; text-align:center; }
-/* 예식장 이름 옆에 전화 — 길을 묻기 가장 빠른 곳이 여기라서 지도와 붙여 둡니다. */
-.location__venue { display:flex; align-items:center; justify-content:center; gap:8px; margin:0 0 5px; color:var(--ink); font-size:19px; font-weight:600; letter-spacing:.01em; }
-.location__venue a { flex:none; line-height:0; }
-.location__venue svg { width:17px; height:17px; fill:var(--muted); }
+.location__head { margin:0; padding:0 30px 24px; text-align:center; }
+.location__venue { margin:0 0 5px; color:var(--ink); font-size:16px; font-weight:500; letter-spacing:.02em; }
 .location__hall { margin:0 !important; color:var(--muted) !important; font-size:13px !important; }
 
-.map-box { margin:0; }
-/* 지도는 화면 끝까지 흘립니다. 테두리로 가두는 것보다 여기가 실제 장소라는
-   느낌이 나고, 좁은 화면에서 지도에 쓸 수 있는 폭도 52px 늘어납니다. */
-#mapCanvas { display:block; width:100%; height:300px; border:0; }
+.map-box { margin:0 26px; }
+/* 지도와 버튼이 하나의 상자로 읽히도록 테두리를 나눠 가집니다 (지도는 아랫선 없음). */
+#mapCanvas { display:block; width:100%; height:250px; border:1px solid var(--line); border-bottom:0; }
 #mapCanvas iframe { display:block; width:100%; height:100%; border:0; }
 /* 주소는 지도 위에 붙는 캡션입니다. 본문 크기(--note)면 두 줄로 접히므로 11px 로 낮춥니다. */
-.map-box__addr { display:flex; align-items:center; justify-content:center; gap:8px; margin:0 0 16px; padding:0 30px; }
-.map-box__addr span { color:var(--muted); font-size:11.5px; letter-spacing:.01em; }
+.map-box__addr { display:flex; align-items:center; justify-content:center; gap:8px; margin:0 0 11px; }
+.map-box__addr span { color:var(--muted); font-size:11px; letter-spacing:.01em; }
 .map-box__addr button { flex:none; padding:0; border:0; background:none; cursor:pointer; line-height:0; }
 .map-box__addr svg { width:13px; height:13px; fill:none; stroke:var(--muted); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
 
-.directions { margin:46px 26px 0; text-align:left; }
-/* 갈래 제목(지하철 / 자차)은 크기와 굵기만으로 나눕니다. 예전에는 헤어라인을
-   깔았는데, 갈래마다 선이 생기니 안내가 아니라 표처럼 읽혔습니다.
-   대신 갈래 사이를 42px 로 벌려 선 없이도 덩어리가 갈라집니다. */
-.direction-group { margin-bottom:42px; }
+.directions { margin:32px 26px 0; text-align:left; }
+/* 갈래 제목(지하철 / 자차)은 가넷 + 헤어라인으로 크게 나누고,
+   그 아래 세부 항목은 올리브 라벨로 한 단 낮춥니다. */
+.direction-group { margin-bottom:34px; }
 .direction-group:last-child { margin-bottom:0; }
-.direction-group__title { display:flex; align-items:center; gap:9px; margin:0 0 2px; color:var(--ink); font-size:15.5px; font-weight:600; letter-spacing:.01em; }
-.direction-group__icon { flex:none; width:20px; height:20px; fill:none; stroke:var(--ink); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.direction-group__title { display:flex; align-items:center; gap:7px; margin:0 0 2px; padding-bottom:9px; border-bottom:1px solid var(--line); color:var(--ink); font-size:13.5px; font-weight:500; letter-spacing:.06em; }
+.direction-group__icon { flex:none; width:17px; height:17px; fill:none; stroke:var(--muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
 /* 노선 번호 — 서울 지하철 실제 노선 색을 씁니다. 팔레트 밖 색이지만
    노선을 알아보게 하는 정보라서 브랜드 색처럼 그대로 둡니다.
    vertical-align 은 실측으로 맞춘 값입니다. middle 은 2.2px 처지는데,
@@ -452,37 +447,32 @@ fieldset input { width: auto; accent-color: var(--olive); }
 .line-no { display:inline-grid; place-content:center; width:17px; height:17px; margin-right:5px; border-radius:50%; color:#fff; font:600 10px/1 var(--display); letter-spacing:0; vertical-align:0.15em; }
 .line-no--5 { background:#996cac; }
 .line-no--8 { background:#e6186c; }
-/* 서울 버스 유형색 — 지선 초록 / 간선 파랑. 채운 뱃지 대신 글자에만 색을 둡니다.
-   상자 안에 두 줄이 나란히 놓이는데 뱃지가 채워져 있으면 번호보다 뱃지가 먼저
-   읽혔습니다. 실제 유형색은 상자 바탕(#f3eeda) 위에서 2.3:1 뿐이라 글자로
-   쓰려고 밝기를 낮췄습니다 — 지선 #387922(4.6:1), 간선은 원색 그대로 5.5:1. */
-.bus-tag { margin-right:7px; font-size:12.5px; font-weight:600; letter-spacing:0; }
-.bus-tag[data-tag="지선"] { color:#387922; }
-.bus-tag[data-tag="간선"] { color:#3d5bab; }
-/* 유형 뱃지가 붙은 줄은 한 상자로 묶입니다(script.js 의 blocks). */
-.direction--tags { margin-top:13px; padding:13px 15px; border-radius:9px; background:#f3eeda; }
-.direction--tags p + p { margin-top:5px; }
+/* 서울 버스 유형색 — 지선 초록 / 간선 파랑. 노선 뱃지와 같은 높이·정렬을 씁니다. */
+.bus-tag { display:inline-grid; place-content:center; min-width:32px; height:17px; margin-right:7px; padding:0 5px; border-radius:3px; color:#fff; font:600 10px/1 var(--display); letter-spacing:0; vertical-align:0.15em; }
+.bus-tag[data-tag="지선"] { background:#53b332; }
+.bus-tag[data-tag="간선"] { background:#3d5bab; }
 /* 덩어리 안은 조이고 사이는 벌립니다. 예전에는 줄간격(13px)과 항목 간격(18px)이
    비슷해서 여러 덩어리가 한 덩어리로 뭉개져 보였습니다.
    라벨 없는 항목(버스 노선처럼 목록으로 읽히는 줄)은 더 촘촘하게 둡니다. */
 .direction { margin-top:7px; }
 .direction--titled { margin-top:22px; }
 .direction:first-of-type { margin-top:14px; }
-.direction__label { display:block; margin-bottom:4px; color:var(--ink); font-size:13px; font-weight:600; letter-spacing:.01em; }
+.direction__label { display:block; margin-bottom:5px; color:var(--muted); font-size:11.5px; letter-spacing:.06em; }
 .direction p { margin:0; color:var(--body); font-size:var(--note); line-height:1.85; white-space:pre-line; }
-.transport__notice { margin:30px 26px 0; padding:0 0 0 14px; border-left:1px solid var(--garnet); color:var(--muted); background:none; font-size:var(--note); line-height:1.9; text-align:left; }
+.transport__notice { margin:6px 26px 0; padding:0 0 0 14px; border-left:1px solid var(--garnet); color:var(--muted); background:none; font-size:var(--note); line-height:1.9; text-align:left; }
 
 /* 지도 바로 아래 붙는 세 칸 버튼. 그룹 하나의 테두리 안에서 헤어라인으로만 칸을 나눕니다. */
-/* 지도가 화면 끝까지 흐르니 버튼은 따로 선 세 장으로 세웁니다 — 지도의
-   연장이 아니라 "앱으로 열기" 라는 다른 일이라서. */
-.map-buttons { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:14px 26px 0; border:0; }
-/* 글자를 앱 이름만으로 줄여서(네이버 지도 -> 네이버) 375px 한 칸 92px 에서도
-   한 줄에 들어갑니다. nowrap 은 그래도 남겨 둡니다. */
-.map-buttons a { display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 2px; border:1px solid var(--line); border-radius:9px; color:var(--body); background:var(--paper); font-size:12.5px; letter-spacing:.01em; text-decoration:none; white-space:nowrap; transition:background .2s, color .2s; }
+.map-buttons { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--line); }
+/* 375px 화면에서 버튼 한 칸이 92px 뿐이라 12.5px 글자로는 "네이버 지" / "도" 로 쪼개지고
+   뱃지까지 아래로 밀려 버튼이 73px 높이가 됐습니다. 지도와 좌우 정렬을 맞춰야 해서
+   바깥 여백은 두고 안쪽(글자·간격·뱃지)만 줄이고, nowrap 으로 쪼개짐을 막습니다. */
+.map-buttons a { display:flex; align-items:center; justify-content:center; gap:5px; padding:12px 2px; color:var(--body); background:none; font-size:11px; letter-spacing:.01em; text-decoration:none; white-space:nowrap; transition:background .2s, color .2s; }
+.map-buttons a + a { border-left:1px solid var(--line); }
 .map-buttons a:hover,
 .map-buttons a:active { color:var(--ink); background:var(--paper-2); }
-/* 앱을 알아보게 하는 브랜드 뱃지. */
-.map-buttons a b { display:grid; place-content:center; width:22px; height:22px; border-radius:6px; color:#fff; font-size:12px; font-weight:700; }
+/* 앱을 알아보게 하는 브랜드 뱃지. 375px 에서 한 칸이 88px 뿐이라
+   뱃지 15px + 간격 5px 를 빼면 글자에 62px 이 남습니다 ("네이버 지도" 가 11px 로 55px). */
+.map-buttons a b { display:grid; place-content:center; width:15px; height:15px; border-radius:3px; color:#fff; font-size:9.5px; font-weight:700; }
 .map-buttons a#naverMap b { background:#03c75a; }
 .map-buttons a#tmapLink b { background:#1a52c4; }
 .map-buttons a#kakaoMap b { color:#3a1d1d; background:#fee500; }
@@ -550,8 +540,7 @@ fieldset input { width: auto; accent-color: var(--olive); }
 /* Responsive safeguards for small mobile screens */
 @media (max-width:390px) {
   .section { padding-inline:24px; }
-  .gallery,
-  .location { padding-inline:0; }
+  .gallery { padding-inline:0; }
   .hero h1 { font-size:clamp(48px,16vw,62px); }
   .hero__date { font-size:clamp(10px,3.5vw,13px); }
   .hero__venue { font-size:clamp(8px,2.8vw,10px); }
@@ -564,8 +553,7 @@ fieldset input { width: auto; accent-color: var(--olive); }
 
 @media (max-width:340px) {
   .section { padding-inline:18px; }
-  .gallery,
-  .location { padding-inline:0; }
+  .gallery { padding-inline:0; }
   .hero h1 { font-size:46px; }
   .hero__couple-labels small { font-size:9px; }
   .hero__couple-labels b { font-size:12px; }
