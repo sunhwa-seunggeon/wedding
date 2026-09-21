@@ -118,7 +118,9 @@ function hydrateInvitation() {
   const naverMapUrl = `https://map.naver.com/p/search/${encodeURIComponent(CONFIG.address)}`;
   $("#naverMap").href = naverMapUrl;
   $("#kakaoMap").href = `https://map.kakao.com/link/search/${encodeURIComponent(CONFIG.address)}`;
-  $$("a[data-tel]").forEach((element) => { element.href = `tel:${CONFIG.tel.replaceAll("-", "")}`; });
+  // data-tel 은 번호를 글자로 찍는 자리(fillText), data-tel-link 는 아이콘만 있는
+  // 링크입니다. 한 속성으로 겸하면 fillText 가 아이콘 <svg> 를 지워 버립니다.
+  $$("a[data-tel], [data-tel-link]").forEach((element) => { element.href = `tel:${CONFIG.tel.replaceAll("-", "")}`; });
   // 티맵은 웹 주소가 없어 앱 스킴을 씁니다(앱이 설치된 기기에서만 열립니다).
   $("#tmapLink").href = `tmap://search?name=${encodeURIComponent(CONFIG.venue)}`;
 }
@@ -244,14 +246,30 @@ function renderDirections() {
   const lines = (list) => (list || []).map((no) => `<b class="line-no line-no--${no}">${no}</b>`).join("");
   const tag = (name) => name ? `<b class="bus-tag" data-tag="${name}">${name}</b>` : "";
 
+  const row = (item) => `<p>${lines(item.lines)}${tag(item.tag)}${item.text}</p>`;
+
+  // 유형 뱃지(지선·간선)가 붙은 줄은 목록이라 연달아 나옵니다. 낱개로 두면
+  // 위 문장과 같은 층으로 읽혀서, 이어진 것끼리 한 상자에 담아 한 덩어리로 봅니다.
+  const blocks = (items) => {
+    const out = [];
+    for (const item of items) {
+      const last = out[out.length - 1];
+      if (item.tag && last && last.tagged) { last.items.push(item); continue; }
+      out.push({ tagged: Boolean(item.tag), items: [item] });
+    }
+    return out.map((block) => block.tagged
+      ? `<div class="direction direction--tags">${block.items.map(row).join("")}</div>`
+      : block.items.map((item) => `
+      <div class="direction${item.label ? " direction--titled" : ""}">
+        ${item.label ? `<span class="direction__label">${item.label}</span>` : ""}
+        ${row(item)}
+      </div>`).join("")).join("");
+  };
+
   $("#directions").innerHTML = CONFIG.directions.map((group) => `
     <div class="direction-group">
       <span class="direction-group__title">${icon(group.icon)}${group.label}</span>
-      ${group.items.map((item) => `
-      <div class="direction${item.label ? " direction--titled" : ""}">
-        ${item.label ? `<span class="direction__label">${item.label}</span>` : ""}
-        <p>${lines(item.lines)}${tag(item.tag)}${item.text}</p>
-      </div>`).join("")}
+      ${blocks(group.items)}
     </div>`).join("");
 }
 
