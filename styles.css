@@ -1,3 +1,15 @@
+/* 조선일보명조 — noonnu CDN 의 한 덩어리 woff(432KB, 굵기는 400 하나뿐이라
+   500 이상은 브라우저가 흉내 냅니다). 구글 폰트처럼 글자 범위별로 쪼개 주지
+   않아서 display:block 으로 받는 동안 잠깐 비웁니다 — 고딕으로 그렸다가
+   명조로 바뀌는 쪽이 더 거슬려서 장식용 라틴 서체와 같은 선택을 했습니다. */
+@font-face {
+  font-family: "ChosunilboNM";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Chosunilbo_myungjo.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
   /* 베이지 바탕에 가넷·올리브 포인트. 괄호 안 숫자는 바닥색(#fcf8ec) 위에서 잰 명암비. */
   --paper: #fcf8ec;      /* 흰색에 베이지 한 방울 — 기본 바닥 */
@@ -13,7 +25,10 @@
   /* 안내 문구 공통 크기. 고정값으로 두면 좁은 화면에서 문장이 한 번 더 접혀
      마지막 줄에 몇 글자만 매달립니다. 화면 폭을 따라가되 14px 을 넘지 않습니다. */
   --note: min(14px, 3.7vw);
-  --display: "Noto Sans KR", sans-serif;
+  /* 한 토큰에 두 서체를 얹었습니다. 글자마다 앞에서부터 찾으므로 영문·숫자는
+     Cinzel 이, Cinzel 에 없는 한글은 조선일보명조가 그립니다.
+     ("Our Wedding" 은 --script(Dancing Script) 라 여기 영향을 받지 않습니다.) */
+  --display: "Cinzel", "ChosunilboNM", "Noto Sans KR", serif;
   --serif-i: "Cormorant Garamond", serif;
   --script: "Dancing Script", cursive;
 }
