@@ -167,8 +167,11 @@
 }
 
 /* 아래 미리보기 — 지금 장에 테를 두르고 나머지는 눌러 둡니다. */
+/* overflow-x:auto 를 주면 overflow-y 도 (명시하지 않아도) 자동으로 'auto' 가
+   되어 세로 방향도 잘립니다. 현재 사진 표시(outline 1.1 + offset 1.1 = 2.2px)가
+   위로 튀어나오는데 위쪽 padding 이 0 이라 윗변만 잘려 보였습니다. */
 .strip{
-  display:flex; gap:5.5px; margin:26.4px 0 0; padding:0 0 4.4px;
+  display:flex; gap:5.5px; margin:26.4px 0 0; padding:2.2px 0 4.4px;
   overflow-x:auto; scrollbar-width:none;
 }
 .strip::-webkit-scrollbar{display:none}
