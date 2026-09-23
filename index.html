@@ -1454,6 +1454,11 @@ const copyLink = () => copyInto(SHARE_URL, copyUrlLabel, "복사됨");
 document.getElementById("kakaoShare").addEventListener("click", async () => {
   if (await loadKakaoSdk()) {
     const link = { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL };
+    // ── 임시 디버그 ── 카카오로 나가는 링크가 실제로 무엇인지 화면에 찍습니다.
+    // "청첩장 보기"가 sunhwakang.github.io 로 가는 원인을 잡는 동안만 둡니다.
+    alert("[공유 디버그]\n주소: " + location.href + "\nSHARE_URL: " + SHARE_URL +
+          "\nlink: " + JSON.stringify(link) + "\n키: " + KAKAO_JS_KEY.slice(0, 8) + "…" +
+          "\nSDK: " + (window.Kakao.VERSION || "?"));
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
