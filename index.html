@@ -318,7 +318,7 @@ img{display:block;max-width:100%}
 
 /* 포인트색은 이 셋에만 — 영문 라벨, 짧은 선, 큰 숫자. */
 .label{margin:0 0 6.6px;color:var(--forest);font:400 14.3px/1 var(--serif);letter-spacing:.08em}
-.label--cap{font:600 11px/1 var(--serif);letter-spacing:.34em;text-transform:uppercase}
+.label--cap{font:700 11px/1 var(--serif);letter-spacing:.34em;text-transform:uppercase}
 
 /* ── 표지 = v1 짜임에 v2 색 ──
    짜임(비율 .68, 사진 위 베일, 이름표, SCROLL)은 v1 그대로이고 색만
@@ -1189,7 +1189,7 @@ document.getElementById("dday").innerHTML =
 
 // 갤러리 = 쌓아 둔 사진 더미. 누르거나 옆으로 밀면 맨 위 장이 뒤로 갑니다.
 // 갤러리 46장 전부, 번호 순서대로(교복 → 연애 → 제복 → 노을 → 웨딩 → 마지막 도로).
-const SHOTS = Array.from({ length: 40 }, (_, i) => String(i + 1).padStart(2, "0"));
+const SHOTS = Array.from({ length: 41 }, (_, i) => String(i + 1).padStart(2, "0"));
 const PAD = (n) => String(n + 1).padStart(2, "0");
 const stack = document.getElementById("stack");
 const strip = document.getElementById("strip");
