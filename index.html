@@ -352,7 +352,7 @@ img{display:block;max-width:100%}
   position:absolute; z-index:2; top:5.5%; left:0; right:0;
   display:flex; flex-direction:column; align-items:center; gap:2.2px; text-align:center;
 }
-.hero .eyebrow{margin:0; color:var(--ink); font:500 11.55px/1 var(--display); letter-spacing:.2em}
+.hero .eyebrow{margin:0; color:var(--ink); font:600 11.55px/1 var(--serif); letter-spacing:.2em}
 /* Our Wedding 은 글꼴이 아니라 받은 손글씨 그림입니다(our-wedding.webp, 1368x529).
    잉크는 손글씨·달력과 같은 방식으로 포인트색 #2b4632 에 알파만 남겨 구웠습니다.
    글자였을 때의 흰 번짐(text-shadow)은 drop-shadow 로 그대로 — 정적인 요소라
@@ -365,8 +365,8 @@ img{display:block;max-width:100%}
 /* 그림의 본문 밑선 아래로 g 꼬리 자리 34.5px 이 비어 있어 날짜가 멀리 떨어져 보였습니다.
    그만큼 위로 당기고(밑선 밑 ~9px), 꼬리는 가운데서 +94px 부터 시작하므로 날짜 폭이
    거기 닿지 않게 14.3 -> 13.2px 로 한 단 줄입니다(폭 206 -> 190px, 반폭 95). */
-.hero__date{margin:-27.5px 0 0; color:var(--body); font:500 13.2px/1.35 var(--display); letter-spacing:.055em}
-.hero__venue{margin:0; color:var(--body); font:500 12.1px/1.3 var(--display); letter-spacing:.08em}
+.hero__date{margin:-27.5px 0 0; color:var(--body); font:600 12.1px/1.35 var(--serif); letter-spacing:.04em}
+.hero__venue{margin:1.1px 0 0; color:var(--body); font:400 13.2px/1.3 var(--kr); letter-spacing:.06em}
 .hero__couple-labels{
   position:absolute; z-index:3; top:82%; left:10%; right:10%;
   display:flex; justify-content:space-between; text-align:center;
@@ -382,7 +382,7 @@ img{display:block;max-width:100%}
   padding:0; border:0; color:var(--forest); background:transparent;
   transform:translateX(-50%); cursor:pointer;
 }
-.scroll-cue span{display:block; margin-bottom:8.8px; font:500 10.45px/1 var(--display); letter-spacing:.2em}
+.scroll-cue span{display:block; margin-bottom:8.8px; font:600 10.45px/1 var(--serif); letter-spacing:.2em}
 .scroll-cue i{display:block; width:1.1px; height:22px; margin:auto; background:var(--forest); animation:pulse 1.7s infinite}
 @keyframes pulse{
   0%,100%{opacity:.25; transform:scaleY(.5); transform-origin:top}
@@ -484,7 +484,7 @@ img{display:block;max-width:100%}
    다만 카드가 끝나자마자 사진이 나와 55px 밖에 안 떨어져 있었습니다. 간격을
    벌리고, 전폭 헤어라인 대신 짧은 선 + 영문 라벨로 바꿨습니다
    (포인트색은 영문 라벨 · 짧은 선 · 큰 숫자에만 쓴다는 규칙 그대로). */
-.sign{margin:0 auto; text-align:center}
+.sign{margin:0 auto; text-align:center; line-height:1}
 /* 제목 밑 한 줄 안내(눌러보세요 / 넘겨보세요). 표지 본문과 같은 Pretendard. */
 .hint{margin:8.8px 0 28.6px; color:var(--body); font:400 12.1px/1.4 var(--display); letter-spacing:.01em; opacity:.8}
 .sign span{color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:.34em; text-transform:uppercase}
