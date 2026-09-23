@@ -1498,12 +1498,6 @@ const copyLink = () => copyInto(SHARE_URL, copyUrlLabel, "복사됨");
 document.getElementById("kakaoShare").addEventListener("click", async () => {
   if (await loadKakaoSdk()) {
     const link = { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL };
-    // ── 디버그 ── 주소에 ?debug 를 붙였을 때만, 카카오로 나가는 링크를 찍습니다.
-    // 확인 결과 링크는 정확히 나갔습니다(…/wedding/). 카카오가 다른 도메인으로 바꾸면
-    // 앱에 등록된 사이트 도메인 문제입니다 — 코드가 아니라 카카오 콘솔에서 고칩니다.
-    if (location.search.includes("debug")) alert("[공유 디버그]\n주소: " + location.href + "\nSHARE_URL: " + SHARE_URL +
-          "\nlink: " + JSON.stringify(link) + "\n키: " + KAKAO_JS_KEY.slice(0, 8) + "…" +
-          "\nSDK: " + (window.Kakao.VERSION || "?"));
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
