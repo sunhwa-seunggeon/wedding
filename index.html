@@ -322,7 +322,10 @@ img{display:block;max-width:100%}
    v2 토큰으로 옮겼습니다: 가넷 -> --forest, 본문 -> --body, 올리브 -> --body.
    sheet 가 아니라 제 높이를 가진 한 장이라 여백도 0 입니다. */
 .hero{
-  position:relative; width:100%; min-height:0; aspect-ratio:.68;
+  /* .68 -> .60. background 는 cover 라, 사진 비율(0.75)이 그대로인 채
+     상자만 세로로 늘어나면 자동으로 양옆이 더 잘립니다(5% -> 12.5%씩) —
+     원본 사진을 다시 자를 필요가 없습니다. */
+  position:relative; width:100%; min-height:0; aspect-ratio:.60;
   margin:0; padding:0; color:var(--ink); background:var(--white); overflow:hidden;
 }
 .hero__photo{
@@ -698,7 +701,7 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
 .direction-group__title{
   display:flex; align-items:center; gap:7.7px; margin:0 0 2.2px; padding-bottom:9.9px;
   border-bottom:1.1px solid var(--hair);
-  color:var(--ink); font:500 14.85px/1 var(--kr); letter-spacing:.06em;
+  color:var(--ink); font:700 14.85px/1 var(--kr); letter-spacing:.06em;
 }
 .direction-group__icon{flex:none; width:18.7px; height:18.7px; fill:none; stroke:var(--body); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
 .direction{margin-top:7.7px}
@@ -1366,7 +1369,8 @@ const DIRECTIONS = [
     { tag: "간선", text: "342, 360, 361, 362, 363, 730" },
   ] },
   { label: "기차", icon: "train", items: [
-    { label: "KTX", text: "수서역 하차 후 천호역으로 이동" },
+    // KTX 는 한 줄뿐이라 label 을 따로 안 두고 본문에 붙입니다 — 볼드 없이 한 줄로.
+    { text: "KTX. 수서역 하차 후 천호역으로 이동" },
   ] },
   { label: "자차", icon: "car",
     // 갈래 제목 바로 밑에 붙는 한 마디. 자차로 오시는 분께 제일 먼저
