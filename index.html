@@ -402,7 +402,8 @@ img{display:block;max-width:100%}
    잠겨 끝나므로 같은 색 베일을 위 110px 에 덮어 종이결이 서서히
    드러나게 합니다 — v1 의 .greeting 과 같은 방식입니다. */
 .note{
-  text-align:center;   /* 여백은 .sheet 것(85.8px 33px)을 그대로 씁니다 */
+  text-align:center;   /* 위·양옆 여백은 .sheet 것을 그대로, 아래만 좁힙니다 — 연락하기 밑이 너무 비었습니다 */
+  padding-bottom:33px;
 }
 /* 베일은 바탕 레이어가 아니라 ::before 입니다 — 레이어에 두면 이 장 끝에
    달린 찢긴 띠가 background-image 를 통째로 복사해 가서 띠까지 베일 색이
@@ -418,7 +419,7 @@ img{display:block;max-width:100%}
 .factsheet{max-width:330px; margin:28.6px auto 50.6px; text-align:left}
 .factsheet div{display:flex; align-items:baseline; justify-content:space-between; gap:17.6px; padding:14.3px 2.2px; border-bottom:1.1px solid var(--hair)}
 .factsheet div:first-child{border-top:1.1px solid var(--hair)}
-.factsheet dt{color:var(--body); font-size:11.55px; letter-spacing:.18em}
+.factsheet dt{color:var(--body); font-size:11.55px; font-weight:700; letter-spacing:.18em}
 .factsheet dd{margin:0; color:var(--ink); font-size:15.4px; font-weight:500; letter-spacing:.02em}
 
 /* ── 손편지 ──
@@ -480,7 +481,9 @@ img{display:block;max-width:100%}
    다만 카드가 끝나자마자 사진이 나와 55px 밖에 안 떨어져 있었습니다. 간격을
    벌리고, 전폭 헤어라인 대신 짧은 선 + 영문 라벨로 바꿨습니다
    (포인트색은 영문 라벨 · 짧은 선 · 큰 숫자에만 쓴다는 규칙 그대로). */
-.sign{margin:0 auto 28.6px; text-align:center}
+.sign{margin:0 auto; text-align:center}
+/* 제목 밑 한 줄 안내(눌러보세요 / 넘겨보세요). 표지 본문과 같은 Pretendard. */
+.hint{margin:8.8px 0 28.6px; color:var(--body); font:400 12.1px/1.4 var(--display); letter-spacing:.01em; opacity:.8}
 .sign span{color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:.34em; text-transform:uppercase}
 .profiles{
   display:grid; grid-template-columns:1fr 1fr; gap:17.6px;
@@ -719,8 +722,8 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
    채우면 칩만 알록달록 튀고 숫자보다 칩이 먼저 읽혔습니다.
    글자는 포인트색으로 10.03:1, 테두리는 장식이라 .45 로 둡니다.
    테두리 1.1px 이 안쪽을 깎으므로 17 -> 19.8px 로 키웠습니다. */
-.line-no{display:inline-grid; place-content:center; width:19.8px; height:19.8px; margin-right:5.5px; border:1.1px solid rgba(43,70,50,.45); border-radius:50%; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
-.bus-tag{display:inline-grid; place-content:center; min-width:37.4px; height:19.8px; margin-right:7.7px; padding:0 6.6px; border:1.1px solid rgba(43,70,50,.45); border-radius:3.3px; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
+.line-no{display:inline-grid; place-content:center; padding-top:1.4px; width:19.8px; height:19.8px; margin-right:5.5px; border:1.1px solid rgba(43,70,50,.45); border-radius:50%; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
+.bus-tag{display:inline-grid; place-content:center; min-width:37.4px; height:19.8px; margin-right:7.7px; padding:1.4px 6.6px 0; border:1.1px solid rgba(43,70,50,.45); border-radius:3.3px; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
 
 /* 갈래 제목 바로 밑에 붙습니다. 목록보다 한 단 작게 두어 설명이 아니라
    덧붙이는 말로 읽힙니다. 
@@ -754,6 +757,8 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
 .info__list dd + dt{margin-top:33px}
 /* 신청 단추는 항목 안에 붙으므로 위 간격만 줄입니다. 한글이라 자간을 좁힙니다. */
 .info__list .line-button{margin-top:15.4px; font-family:var(--kr); letter-spacing:.08em; font-size:13.2px}
+/* 연락하기(<button>) 도 같은 명조로. Cinzel 에는 한글이 없어 기기 기본 글꼴로 떨어지고 있었습니다. */
+button.line-button{font-family:var(--kr); letter-spacing:.08em; font-size:13.2px; text-transform:none}
 
 /* 이 장만 위아래를 좁힙니다. 위는 안내사항의 찢긴 끝(37.4px)이 들어와 있어
    그보다 넉넉히, 아래는 바로 공유 단추가 이어지므로 짧게. */
@@ -896,6 +901,7 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
 
   <div class="people">
     <div class="sign"><span>Groom &amp; Bride</span></div>
+    <p class="hint">클릭해보세요!</p>
     <div class="profiles">
       <figure class="profile">
         <button class="profile__card" type="button">
@@ -925,6 +931,7 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
 
 <section class="sheet sheet--white gal">
   <p class="label label--cap">Gallery</p>
+  <p class="hint">옆으로 넘겨보세요!</p>
   <div class="deck">
     <button class="deck__nav deck__nav--prev" id="deckPrev" type="button" aria-label="이전 사진">&lsaquo;</button>
     <div class="stack" id="stack" role="group" tabindex="0"
@@ -1381,8 +1388,8 @@ const DIRECTIONS = [
     note: "웨딩홀 건물 내에는 주차가 어렵습니다.\n가급적 대중교통 또는 천호지하공영주차장을 이용해 주세요.",
     items: [
     { label: "내비 검색", text: "천호지하공영주차장 천호입구\n서울 강동구 천호대로 1026-1 (6번 출구 앞)" },
-    { label: "주차 위치", text: "지하 1,2층 기둥번호 A,B,C,D구역 20~60번 사이 주차 추천" },
-    { label: "예식장까지", text: "주차 후 천호역 지하상가를 통해 10번 출구로 이동 (현대백화점 방향)" },
+    { label: "주차 위치", text: "지하 1·2층 기둥번호 A·B·C·D구역\n20~60번 사이 주차 추천" },
+    { label: "예식장까지", text: "주차 후 천호역 지하상가를 통해\n10번 출구로 이동 (현대백화점 방향)" },
   ] },
 ];
 
