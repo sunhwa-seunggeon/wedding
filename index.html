@@ -88,6 +88,13 @@
 }
 .stack:focus{outline:none}
 .stack:focus-visible{outline:1px solid var(--forest); outline-offset:10px}
+/* 손가락 기기에서는 포커스 테두리를 그리지 않습니다. 확대 보기를 닫으면 포커스가
+   더미로 돌아오고, 닫기 단추도 눌린 뒤 포커스가 남아 iOS 가 초록 상자를 그립니다.
+   키보드로 다니는 마우스 기기에서만 테두리가 필요합니다. */
+@media (hover:none){
+  .stack:focus-visible, .dialog-close:focus-visible, .lb__nav:focus-visible,
+  .deck__nav:focus-visible, .reel__nav:focus-visible{outline:none}
+}
 /* 카드는 폴라로이드 사진(pola-frame.webp)입니다. 테만 남고 창과 바깥이
    투명이라 사진을 뒤에 깔고 그대로 얹습니다. 투명 여백을 걷어 내
    1024x1536 -> 812x1215, 실측 창 좌 6.53% / 상 5.84% / 우 6.53% / 하 15.80%.
@@ -215,7 +222,7 @@ html{background:#e7e0d0; overflow-x:hidden}
 /* 브라우저 확대 110% 가 보기 좋다고 해서 그걸 기본값으로 굳혔습니다.
    섹션 글자는 고정 px, hero 는 cqw 라 둘을 한 번에 키우려면 zoom 이 제일 짧습니다.
    zoom 은 레이아웃 뷰포트를 1/1.1 로 줄이므로 가로 스크롤은 생기지 않습니다. */
-body{zoom:1.1;width:100%;min-width:0;max-width:460px;margin:0 auto;position:relative;overflow-x:hidden;color:var(--body);font-family:var(--kr);line-height:1.8;-webkit-font-smoothing:antialiased}
+body{zoom:1.1;width:100%;min-width:0;max-width:460px;margin:0 auto;position:relative;color:var(--body);font-family:var(--kr);line-height:1.8;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 
 /* 종이 한 장 = 섹션 하나. 결은 모두 같은 질감 이미지를 곱해서 냅니다. */
@@ -313,8 +320,11 @@ img{display:block;max-width:100%}
 }
 .hero__photo{
   position:absolute; inset:0;
-  background:url("./images/hero-room.jpg") center center/cover no-repeat;
-  filter:sepia(.08) contrast(1.02) brightness(1.06);
+  /* 색 보정(sepia .08 · contrast 1.02 · brightness 1.06)은 그림에 구워 넣었습니다.
+     filter 를 건 채로 transform 을 12초 돌리면 매 프레임 다시 그려서, 폰에서
+     첫 스크롤이 턱 걸렸습니다. 이제 transform 만 움직입니다. */
+  background:url("./images/hero-room-toned.jpg") center center/cover no-repeat;
+  will-change:transform;
   animation:heroZoom 12s ease-out both;
 }
 @keyframes heroZoom{ from{transform:scale(1.08)} to{transform:scale(1)} }
@@ -791,7 +801,7 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
    종이결이 그대로 사진 속으로 이어지게 합니다 — 평평한 색을 덮는 방식은
    종이결이 끝나는 자리가 선으로 남았습니다. 그라데이션 마스크라 file://
    에서도 막히지 않습니다(막히는 건 url() 그림 마스크입니다). */
-.share__photo{margin:40px -30px 0}
+.share__photo{margin:4px -30px 0}
 .share__photo img{
   display:block; width:100%;
   -webkit-mask-image:linear-gradient(to bottom, transparent, #000 34%);
