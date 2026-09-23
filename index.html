@@ -136,6 +136,7 @@
    화살표와 닫기는 사진 위에 놓이므로, 밝은 사진에서도 읽히도록 그림자를
    깔아 둡니다. */
 #lightbox{
+  touch-action:none;   /* 손가락 확대·두 번 탭 확대 막기. 옆으로 밀어 넘기기는 스크립트가 처리 */
   width:100%; max-width:none; height:100%; max-height:none;
   padding:0; border:0; border-radius:0;
   background:rgba(10,30,20,.96);
@@ -670,7 +671,7 @@ dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif);
    파일 이름에 색을 붙인 이유: 같은 이름으로 다시 구우면 브라우저가 옛
    그림을 캐시에서 꺼내 씁니다 — 종이색으로 구운 옛것은 흰 바탕에서
    안 보여서 "판화가 사라졌다"로 나타났습니다. */
-.venue{display:block; width:86%; margin:26.4px auto 17.6px; opacity:.92}
+.venue{display:block; width:94%; margin:26.4px auto 17.6px; opacity:.92}
 
 /* 레퍼런스처럼 낱개 알약 세 개. 테두리만으로는 약해서 아주 옅은
    초록 판을 깔았습니다. */
@@ -1268,6 +1269,13 @@ lightbox.addEventListener("touchend", (e) => {
   const dx = e.changedTouches[0].clientX - lx, dy = e.changedTouches[0].clientY - ly;
   if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) go(dx < 0 ? 1 : -1);
 }, { passive: true });
+// 확대 보기가 열려 있는 동안 손가락 확대를 막습니다. touch-action 만으로는 iOS 가
+// 안 듣는 경우가 있어서: 두 손가락 touchmove 와 사파리의 gesture 이벤트를 직접 막습니다.
+// passive 를 끄지 않으면 preventDefault 가 무시됩니다.
+const blockPinch = (e) => { if (lightbox.open && (!e.touches || e.touches.length > 1)) e.preventDefault(); };
+document.addEventListener("touchmove", blockPinch, { passive: false });
+document.addEventListener("gesturestart", blockPinch, { passive: false });
+document.addEventListener("gesturechange", blockPinch, { passive: false });
 document.getElementById("deckPrev").addEventListener("click", () => go(-1));
 document.getElementById("deckNext").addEventListener("click", () => go(1));
 // 미리보기 화살표는 장을 넘기지 않고 줄만 밉니다 — 썸네일 네 칸씩.
