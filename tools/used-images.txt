@@ -37,7 +37,6 @@ gallery/full/36.jpg
 gallery/full/37.jpg
 gallery/full/38.jpg
 gallery/full/39.jpg
-gallery/full/40.jpg
 gallery/mid/01.jpg
 gallery/mid/02.jpg
 gallery/mid/03.jpg
@@ -77,7 +76,6 @@ gallery/mid/36.jpg
 gallery/mid/37.jpg
 gallery/mid/38.jpg
 gallery/mid/39.jpg
-gallery/mid/40.jpg
 gallery/thumb/01.jpg
 gallery/thumb/02.jpg
 gallery/thumb/03.jpg
@@ -117,4 +115,3 @@ gallery/thumb/36.jpg
 gallery/thumb/37.jpg
 gallery/thumb/38.jpg
 gallery/thumb/39.jpg
-gallery/thumb/40.jpg
