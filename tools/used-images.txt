@@ -138,6 +138,6 @@ profile/bride-now.jpg
 profile/groom-kid.jpg
 profile/groom-now.jpg
 save-the-date.webp
-share.jpg
+share-brick.jpg
 stamp.webp
 venue-forest.webp
