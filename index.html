@@ -15,6 +15,8 @@
 <meta property="og:image" content="https://sunhwa-seunggeon.github.io/wedding/images/share.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 <title>김승건 ♥ 강선화, 결혼합니다</title>
+<!-- 표지 사진은 첫 화면이라 가장 먼저 받습니다 — 오기 전엔 바탕색만 보여 "빈 화면"으로 느껴집니다. -->
+<link rel="preload" as="image" href="./images/hero-room-toned.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=block" rel="stylesheet" />
@@ -49,20 +51,22 @@
    안의 그림만 갈립니다. 깊이 3 아래는 모두 같은 자리에 겹쳐 둡니다 —
    열두 장을 다 벌려 놓으면 더미가 아니라 부채가 됩니다. */
 .gal{text-align:center}
-/* 화살표는 더미 옆과 미리보기 줄 옆에 각각. 누르는 자리를 34px 로 잡아
-   손가락이 닿습니다(글자만 보이고 상자는 안 보입니다). */
+/* 화살표는 더미 옆과 미리보기 줄 옆에 각각. 누르는 자리를 37.4px 로 잡아
+   손가락이 닿습니다(글자만 보이고 상자는 안 보입니다).
+   몸통 밖으로 한 px 도 내보내면 안 됩니다 — 문서 폭이 그만큼 늘어나 iOS 가
+   옆으로 끌리고, 끌리면 오른쫽에 바깥 바탕색이 드러납니다. */
 .deck,
-.reel{position:relative; margin:0 -30px; padding:0 30px}
+.reel{position:relative; margin:0 -33px; padding:0 33px}
 .deck__nav{
   position:absolute; top:44%; translate:0 -50%; z-index:3;
-  width:34px; height:34px; padding:0; border:0; background:transparent;
-  color:var(--forest); font:300 26px/1 var(--serif); cursor:pointer; opacity:.55;
+  width:37.4px; height:37.4px; padding:0; border:0; background:transparent;
+  color:var(--forest); font:300 28.6px/1 var(--serif); cursor:pointer; opacity:.55;
   -webkit-tap-highlight-color:transparent;
 }
 .reel__nav{
   position:absolute; top:50%; translate:0 -50%; z-index:3;
-  width:30px; height:44px; padding:0; border:0;
-  color:var(--forest); font:300 20px/1 var(--serif); cursor:pointer; opacity:.6;
+  width:33px; height:48.4px; padding:0; border:0;
+  color:var(--forest); font:300 22px/1 var(--serif); cursor:pointer; opacity:.6;
   -webkit-tap-highlight-color:transparent;
 }
 /* 미리보기는 끝까지 흐르므로 화살표 뒤에 종이색을 깔아 썸네일과 겹치지
@@ -74,27 +78,20 @@
 .deck__nav:focus,
 .reel__nav:focus{outline:none}
 .deck__nav:focus-visible,
-.reel__nav:focus-visible{outline:1px solid var(--forest); outline-offset:2px}
-.deck__nav--prev{left:-6px}
-.deck__nav--next{right:-6px}
+.reel__nav:focus-visible{outline:1.1px solid var(--forest); outline-offset:2.2px}
+.deck__nav--prev{left:0}
+.deck__nav--next{right:0}
 .reel__nav--prev{left:0}
 .reel__nav--next{right:0}
 
 .stack{
-  position:relative; width:84%; margin:30px auto 0;
+  position:relative; width:84%; margin:33px auto 0;
   aspect-ratio:812/1215;   /* 폴라로이드 원본 비율 */
   cursor:zoom-in; -webkit-tap-highlight-color:transparent;
   touch-action:pan-y;                  /* 세로 스크롤은 페이지에 넘깁니다 */
 }
 .stack:focus{outline:none}
-.stack:focus-visible{outline:1px solid var(--forest); outline-offset:10px}
-/* 손가락 기기에서는 포커스 테두리를 그리지 않습니다. 확대 보기를 닫으면 포커스가
-   더미로 돌아오고, 닫기 단추도 눌린 뒤 포커스가 남아 iOS 가 초록 상자를 그립니다.
-   키보드로 다니는 마우스 기기에서만 테두리가 필요합니다. */
-@media (hover:none){
-  .stack:focus-visible, .dialog-close:focus-visible, .lb__nav:focus-visible,
-  .deck__nav:focus-visible, .reel__nav:focus-visible{outline:none}
-}
+.stack:focus-visible{outline:1.1px solid var(--forest); outline-offset:11px}
 /* 카드는 폴라로이드 사진(pola-frame.webp)입니다. 테만 남고 창과 바깥이
    투명이라 사진을 뒤에 깔고 그대로 얹습니다. 투명 여백을 걷어 내
    1024x1536 -> 812x1215, 실측 창 좌 6.53% / 상 5.84% / 우 6.53% / 하 15.80%.
@@ -103,9 +100,9 @@
    네모난 그림자는 모서리에서 삐져나옵니다. */
 .pola{
   position:absolute; inset:0; margin:0;
-  filter:drop-shadow(0 7px 13px rgba(20,16,12,.17));
+  filter:drop-shadow(0 7.7px 14.3px rgba(20,16,12,.17));
   transform-origin:50% 60%;
-  translate:calc(var(--d) * 5px) calc(var(--d) * -4px);
+  translate:calc(var(--d) * 5.5px) calc(var(--d) * -4.4px);
   rotate:calc(var(--d) * 1.6deg - .8deg);
   scale:calc(1 - var(--d) * .018);
   transition:translate .42s ease, rotate .42s ease, scale .42s ease, opacity .42s ease;
@@ -126,8 +123,8 @@
   position:absolute; left:0; right:0; top:89%; z-index:3;
   color:var(--body);
   /* 열두 장에 같은 글이 들어가지만 보이는 건 맨 위 장뿐입니다.
-     자간을 .28em 으로 두면 262px 카드에서 줄이 접혀 .14em 으로 줄였습니다. */
-  font:600 8.5px/1 var(--serif); letter-spacing:.14em; white-space:nowrap;
+     자간을 .28em 으로 두면 288.2px 카드에서 줄이 접혀 .14em 으로 줄였습니다. */
+  font:600 9.35px/1 var(--serif); letter-spacing:.14em; white-space:nowrap;
   /* 뒤 장들의 번호가 맨 위 장 아래로 삐져나와 겹쳐 보였습니다.
      opacity 는 0~1 로 잘리므로 --d 가 1 이상이면 그대로 0 이 됩니다. */
   opacity:calc(1 - var(--d));
@@ -148,41 +145,41 @@
 #lightbox::backdrop{background:rgba(10,30,20,.96)}
 #lightbox img{max-width:100%; max-height:100%; object-fit:contain}
 #lightbox .dialog-close{
-  color:var(--paper); font-size:34px;
-  text-shadow:0 1px 5px rgba(10,30,20,.9);
+  color:var(--paper); font-size:37.4px;
+  text-shadow:0 1.1px 5.5px rgba(10,30,20,.9);
 }
 .lb__nav{
   position:absolute; top:50%; translate:0 -50%; z-index:2;
-  width:46px; height:56px; padding:0; border:0; background:transparent;
-  color:var(--paper); font:300 30px/1 var(--serif); cursor:pointer;
-  text-shadow:0 1px 5px rgba(10,30,20,.9);
+  width:50.6px; height:61.6px; padding:0; border:0; background:transparent;
+  color:var(--paper); font:300 33px/1 var(--serif); cursor:pointer;
+  text-shadow:0 1.1px 5.5px rgba(10,30,20,.9);
   -webkit-tap-highlight-color:transparent;
 }
-.lb__nav--prev{left:2px}
-.lb__nav--next{right:2px}
+.lb__nav--prev{left:2.2px}
+.lb__nav--next{right:2.2px}
 .lb__nav:focus{outline:none}
-.lb__nav:focus-visible{outline:1px solid var(--paper); outline-offset:2px}
+.lb__nav:focus-visible{outline:1.1px solid var(--paper); outline-offset:2.2px}
 .lb__count{
-  position:absolute; left:0; right:0; bottom:22px; margin:0;
-  color:var(--paper); font:600 10px/1 var(--serif); letter-spacing:.28em;
-  text-align:center; text-shadow:0 1px 5px rgba(10,30,20,.9);
+  position:absolute; left:0; right:0; bottom:24.2px; margin:0;
+  color:var(--paper); font:600 11px/1 var(--serif); letter-spacing:.28em;
+  text-align:center; text-shadow:0 1.1px 5.5px rgba(10,30,20,.9);
 }
 
 /* 아래 미리보기 — 지금 장에 테를 두르고 나머지는 눌러 둡니다. */
 .strip{
-  display:flex; gap:5px; margin:24px 0 0; padding:0 0 4px;
+  display:flex; gap:5.5px; margin:26.4px 0 0; padding:0 0 4.4px;
   overflow-x:auto; scrollbar-width:none;
 }
 .strip::-webkit-scrollbar{display:none}
 .strip button{
-  flex:0 0 auto; width:38px; padding:0; border:0; background:none; cursor:pointer;
+  flex:0 0 auto; width:41.8px; padding:0; border:0; background:none; cursor:pointer;
   -webkit-tap-highlight-color:transparent;
 }
 .strip img{
   display:block; width:100%; aspect-ratio:2/3; object-fit:cover;
   opacity:.45; transition:opacity .2s;
 }
-.strip button[aria-current="true"] img{opacity:1; outline:1px solid var(--forest); outline-offset:1px}
+.strip button[aria-current="true"] img{opacity:1; outline:1.1px solid var(--forest); outline-offset:1.1px}
 
 </style>
 <style>
@@ -211,29 +208,34 @@
   /* 표지(v1)가 쓰는 두 가지. */
   --display:"Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;
   --script:"Dancing Script",cursive;
-  --tear-h:34px;
-  --tear-lap:5px;     /* 띠 윗머리가 제 장 안으로 겹치는 깊이 */
+  --tear-h:37.4px;
+  --tear-lap:5.5px;     /* 띠 윗머리가 제 장 안으로 겹치는 깊이 */
 }
 *{box-sizing:border-box}
-.sr-only{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
-/* 가로로 넘치는 것은 무엇이든 잘라 냅니다 — 폰에서 오른쪽에 바탕색 띠가 보이며
-   옆으로 밀리는 증상은 어떤 요소 하나가 몸통보다 넓어져 생깁니다. v1 과 같은 처방. */
-html{background:#e7e0d0; overflow-x:hidden}
-/* 브라우저 확대 110% 가 보기 좋다고 해서 그걸 기본값으로 굳혔습니다.
-   섹션 글자는 고정 px, hero 는 cqw 라 둘을 한 번에 키우려면 zoom 이 제일 짧습니다.
-   zoom 은 레이아웃 뷰포트를 1/1.1 로 줄이므로 가로 스크롤은 생기지 않습니다. */
-body{zoom:1.1;width:100%;min-width:0;max-width:460px;margin:0 auto;position:relative;color:var(--body);font-family:var(--kr);line-height:1.8;-webkit-font-smoothing:antialiased}
+.sr-only{position:absolute; width:1.1px; height:1.1px; margin:-1.1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+/* 가로로 넘치는 것은 잘라 냅니다. hidden 이 아니라 clip 인 이유: hidden 은 스크롤
+   컨테이너를 만들어 iOS 가 첫 스크롤을 붙잡고, 옆으로 끌리는 것도 못 막았습니다.
+   clip 은 스크롤 컨테이너 없이 잘라 내기만 합니다. 그래도 근본은 몸통 밖으로
+   나가는 요소를 두지 않는 것입니다(갤러리 화살표가 그랬습니다). */
+html{background:#e7e0d0; overflow-x:clip}
+/* 원래 body 에 zoom 1.1 을 걸어 110% 를 냈는데, iOS 사파리가 zoom 을 다르게 셈해서
+   오른쪽에 바탕이 새고 첫 스크롤이 걸렸습니다. 대신 스타일의 모든 px 값을
+   1.1 배로 구워 넣었습니다(%·cqw 는 그대로 — 몸통 폭이 1.1 배 커져 저절로 맞고,
+   vw 는 zoom 때도 1.1 배로 그려졌기에 함께 키움). 브라우저 기본 글자 16px 도
+   17.6px 로 못 박았습니다. 그래서 이 파일의 px 는 11 / 17.6 / 563.2 처럼 낯선
+   숫자입니다. @media 조건의 px 는 뷰포트 기준이라 손대지 않았습니다. */
+body{width:100%;min-width:0;max-width:506px;margin:0 auto;position:relative;overflow-x:clip;color:var(--body);font:17.6px/1.8 var(--kr);-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 
 /* 종이 한 장 = 섹션 하나. 결은 모두 같은 질감 이미지를 곱해서 냅니다. */
-.sheet{position:relative;padding:78px 30px}
+.sheet{position:relative;padding:85.8px 33px}
 .sheet--white  { background-color:var(--white) }
 .sheet--paper  { background-color:var(--paper) }
 .sheet--paper2 { background-color:var(--paper-2) }
 
 .sheet{
   background-image:url("./images/paper.jpg");
-  background-size:512px;
+  background-size:563.2px;
   background-blend-mode:multiply;
 }
 
@@ -261,14 +263,14 @@ img{display:block;max-width:100%}
   height:calc(var(--tear-h) + var(--tear-lap));
   pointer-events:none;
 }
-/* 그림자는 없앴습니다. 찢긴 그림을 3px 내려 깔면 두 찢긴 선 사이 3px 이
+/* 그림자는 없앴습니다. 찢긴 그림을 3.3px 내려 깔면 두 찢긴 선 사이 3.3px 이
    그대로 띠로 남아, 흐리게 해도 종이 위에서는 가로줄로 보입니다.
    되살리려면 아래를 넣으면 됩니다. 상자는 띠와 같아야 합니다(inset:0) —
    다르면 같은 그림이 다른 배율로 늘어나 선이 두 줄이 됩니다.
      .tear:before{content:""; position:absolute; inset:0;
        background:rgba(58,18,22,.16);
        mask:var(--edge) 0 0/100% 100% no-repeat;
-       filter:blur(3px); translate:0 3px} */
+       filter:blur(3.3px); translate:0 3.3px} */
 .tear > i{
   display:block; height:100%;
   /* 색과 결은 JS 가 제 장에서 그대로 복사합니다(alignTears).
@@ -277,7 +279,7 @@ img{display:block;max-width:100%}
      붙거나 꺼졌을 때를 위한 대비입니다. */
   background-color:var(--paper);
   background-image:url("./images/paper.jpg");
-  background-size:512px;
+  background-size:563.2px;
   background-blend-mode:multiply;
   -webkit-mask-image:var(--edge); mask-image:var(--edge);
   -webkit-mask-size:100% 100%;   mask-size:100% 100%;
@@ -302,13 +304,13 @@ img{display:block;max-width:100%}
    찢긴 띠(.tear)는 빼야 합니다 — 위치가 장 끝에 매달려 있어 움직이면 어긋납니다.
    is-in 에서 translate:none 으로 두는 이유: 0 0 이라도 transform 이 남아 있으면
    쌓임 맥락이 생겨 z-index 가 꼬일 수 있습니다. */
-.reveal{opacity:0; translate:0 22px; transition:opacity .7s ease, translate .7s ease}
+.reveal{opacity:0; translate:0 24.2px; transition:opacity .7s ease, translate .7s ease}
 .reveal.is-in{opacity:1; translate:none}
 @media (prefers-reduced-motion:reduce){ .reveal{opacity:1; translate:none; transition:none} }
 
 /* 포인트색은 이 셋에만 — 영문 라벨, 짧은 선, 큰 숫자. */
-.label{margin:0 0 6px;color:var(--forest);font:400 13px/1 var(--serif);letter-spacing:.08em}
-.label--cap{font:600 10px/1 var(--serif);letter-spacing:.34em;text-transform:uppercase}
+.label{margin:0 0 6.6px;color:var(--forest);font:400 14.3px/1 var(--serif);letter-spacing:.08em}
+.label--cap{font:600 11px/1 var(--serif);letter-spacing:.34em;text-transform:uppercase}
 
 /* ── 표지 = v1 짜임에 v2 색 ──
    짜임(비율 .68, 사진 위 베일, 이름표, SCROLL)은 v1 그대로이고 색만
@@ -316,7 +318,7 @@ img{display:block;max-width:100%}
    sheet 가 아니라 제 높이를 가진 한 장이라 여백도 0 입니다. */
 .hero{
   position:relative; width:100%; min-height:0; aspect-ratio:.68;
-  margin:0; padding:0; color:var(--ink); background:var(--paper-2); overflow:hidden;
+  margin:0; padding:0; color:var(--ink); background:var(--white); overflow:hidden;
 }
 .hero__photo{
   position:absolute; inset:0;
@@ -330,7 +332,7 @@ img{display:block;max-width:100%}
 @keyframes heroZoom{ from{transform:scale(1.08)} to{transform:scale(1)} }
 /* 아래로 갈수록 아랫장 색으로 잠깁니다. 끝 색 #f1efea 는 아랫장의
    실제 색입니다 — --paper(#f6f4ef)에 종이결(평균 249.7)을 곱한 값.
-   아랫장이 이 색을 받아 위 100px 에서 걷어냅니다(.note::before). */
+   아랫장이 이 색을 받아 위 110px 에서 걷어냅니다(.note::before). */
 .hero__shade{
   position:absolute; inset:0;
   background:linear-gradient(180deg,
@@ -339,74 +341,74 @@ img{display:block;max-width:100%}
 }
 .hero__content{
   position:absolute; z-index:2; top:5.5%; left:0; right:0;
-  display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:2.2px; text-align:center;
 }
-.hero .eyebrow{margin:0; color:var(--ink); font:500 10.5px/1 var(--display); letter-spacing:.2em}
+.hero .eyebrow{margin:0; color:var(--ink); font:500 11.55px/1 var(--display); letter-spacing:.2em}
 .hero h1{
-  margin:-1px 0 0; color:var(--forest);
-  font:700 clamp(54px, 17vw, 78px)/.94 var(--script); letter-spacing:-.04em;
-  text-shadow:0 2px 18px rgba(252,251,250,.95);
+  margin:-1.1px 0 0; color:var(--forest);
+  font:700 clamp(59.4px, 18.7vw, 85.8px)/.94 var(--script); letter-spacing:-.04em;
+  text-shadow:0 2.2px 19.8px rgba(252,251,250,.95);
 }
-.hero__date{margin:0; color:var(--body); font:500 13px/1.35 var(--display); letter-spacing:.07em}
-.hero__venue{margin:0; color:var(--body); font:500 11.5px/1.3 var(--display); letter-spacing:.08em}
+.hero__date{margin:0; color:var(--body); font:500 14.3px/1.35 var(--display); letter-spacing:.07em}
+.hero__venue{margin:0; color:var(--body); font:500 12.65px/1.3 var(--display); letter-spacing:.08em}
 .hero__couple-labels{
   position:absolute; z-index:3; top:82%; left:10%; right:10%;
   display:flex; justify-content:space-between; text-align:center;
-  text-shadow:0 1px 10px rgba(252,251,250,.95);
+  text-shadow:0 1.1px 11px rgba(252,251,250,.95);
 }
 .hero__couple-labels p{margin:0}
 .hero__couple-labels small,
 .hero__couple-labels b{display:block}
-.hero__couple-labels small{margin-bottom:5px; color:var(--body); font-size:11px; font-weight:400}
-.hero__couple-labels b{font-size:15px; font-weight:400; letter-spacing:.04em}
+.hero__couple-labels small{margin-bottom:5.5px; color:var(--body); font-size:12.1px; font-weight:400}
+.hero__couple-labels b{font-size:16.5px; font-weight:400; letter-spacing:.04em}
 .scroll-cue{
-  position:absolute; z-index:3; bottom:19px; left:50%;
+  position:absolute; z-index:3; bottom:20.9px; left:50%;
   padding:0; border:0; color:var(--forest); background:transparent;
   transform:translateX(-50%); cursor:pointer;
 }
-.scroll-cue span{display:block; margin-bottom:8px; font:500 9.5px/1 var(--display); letter-spacing:.2em}
-.scroll-cue i{display:block; width:1px; height:20px; margin:auto; background:var(--forest); animation:pulse 1.7s infinite}
+.scroll-cue span{display:block; margin-bottom:8.8px; font:500 10.45px/1 var(--display); letter-spacing:.2em}
+.scroll-cue i{display:block; width:1.1px; height:22px; margin:auto; background:var(--forest); animation:pulse 1.7s infinite}
 @keyframes pulse{
   0%,100%{opacity:.25; transform:scaleY(.5); transform-origin:top}
   50%{opacity:1; transform:scaleY(1)}
 }
 /* 좁은 화면 — v1 의 값 그대로. */
 @media (max-width:390px){
-  .hero h1{font-size:clamp(48px,16vw,62px)}
-  .hero__date{font-size:clamp(10px,3.5vw,13px)}
-  .hero__venue{font-size:clamp(8px,2.8vw,10px)}
+  .hero h1{font-size:clamp(52.8px,17.6vw,68.2px)}
+  .hero__date{font-size:clamp(11px,3.85vw,14.3px)}
+  .hero__venue{font-size:clamp(8.8px,3.08vw,11px)}
   .hero__couple-labels{left:8%; right:8%}
 }
 @media (max-width:340px){
-  .hero h1{font-size:46px}
-  .hero__couple-labels small{font-size:9px}
-  .hero__couple-labels b{font-size:12px}
+  .hero h1{font-size:50.6px}
+  .hero__couple-labels small{font-size:9.9px}
+  .hero__couple-labels b{font-size:13.2px}
 }
 
 
 /* ── SAVE THE DATE = v1 의 첫 챕터 ──
    짜임만 v1 이고 색은 v2 토큰입니다. 표지가 #f1efea(이 장의 실제 색)로
-   잠겨 끝나므로 같은 색 베일을 위 100px 에 덮어 종이결이 서서히
+   잠겨 끝나므로 같은 색 베일을 위 110px 에 덮어 종이결이 서서히
    드러나게 합니다 — v1 의 .greeting 과 같은 방식입니다. */
 .note{
-  text-align:center;   /* 여백은 .sheet 것(78px 30px)을 그대로 씁니다 */
+  text-align:center;   /* 여백은 .sheet 것(85.8px 33px)을 그대로 씁니다 */
 }
 /* 베일은 바탕 레이어가 아니라 ::before 입니다 — 레이어에 두면 이 장 끝에
    달린 찢긴 띠가 background-image 를 통째로 복사해 가서 띠까지 베일 색이
    됩니다. 글이 가려지지 않도록 바로 아래 두 줄에 position 을 줍니다. */
 .note::before{
-  content:""; position:absolute; left:0; right:0; top:0; height:100px; z-index:0;
+  content:""; position:absolute; left:0; right:0; top:0; height:110px; z-index:0;
   background:linear-gradient(#f1efea, rgba(241,239,234,0)); pointer-events:none;
 }
 /* 베일은 ::before 라 정적인 글 위에 올라옵니다 — 머리글만 위로 올립니다. */
 .note .label,
 .factsheet{position:relative}
 /* 예식 정보 표 — 라벨과 값이 헤어라인으로 나뉘어 훑어보기 쉽습니다. */
-.factsheet{max-width:300px; margin:26px auto 46px; text-align:left}
-.factsheet div{display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:13px 2px; border-bottom:1px solid var(--hair)}
-.factsheet div:first-child{border-top:1px solid var(--hair)}
-.factsheet dt{color:var(--body); font-size:10.5px; letter-spacing:.18em}
-.factsheet dd{margin:0; color:var(--ink); font-size:14px; font-weight:500; letter-spacing:.02em}
+.factsheet{max-width:330px; margin:28.6px auto 50.6px; text-align:left}
+.factsheet div{display:flex; align-items:baseline; justify-content:space-between; gap:17.6px; padding:14.3px 2.2px; border-bottom:1.1px solid var(--hair)}
+.factsheet div:first-child{border-top:1.1px solid var(--hair)}
+.factsheet dt{color:var(--body); font-size:11.55px; letter-spacing:.18em}
+.factsheet dd{margin:0; color:var(--ink); font-size:15.4px; font-weight:500; letter-spacing:.02em}
 
 /* ── 손편지 ──
    편지지 한 장이 표 아래에 그대로 놓입니다(바탕은 이 장의 종이결).
@@ -427,14 +429,14 @@ img{display:block;max-width:100%}
    file:// 로 직접 열면 교차 출처로 막혀 아예 안 보입니다. 대신 포인트색을
    바꾸면 이 이미지들을 다시 구워야 합니다. */
 .note__letter{
-  position:relative; width:min(100%, 330px); margin:0 auto;
+  position:relative; width:min(100%, 363px); margin:0 auto;
   container-type:inline-size;   /* 우편번호 숫자를 편지지 폭에 맞추려고 */
-  box-shadow:0 12px 30px rgba(20,16,12,.16);
+  box-shadow:0 13.2px 33px rgba(20,16,12,.16);
 }
 .note__paper{display:block; width:100%}
 /* 우표 칸 — 편지지 원본(1024x1536)에서 잰 자리입니다. 톱니는 바깥으로
    나 있고 직선이 안쪽 경계입니다(x 716..953, y 106..372). 사진을 그 직선에
-   딱 맞췄더니 톱니가 1px 남짓이라 눈에 안 띄어서, 사방 22px 을 흰 여백으로
+   딱 맞췄더니 톱니가 1.1px 남짓이라 눈에 안 띄어서, 사방 24.2px 을 흰 여백으로
    남겼습니다 — 실제 우표처럼 테두리가 생기면서 톱니 모양이 읽힙니다.
    사진은 우표 칸 비율(0.879)로 미리 잘라 두었지만 cover 로 한 번 더
    막아 둡니다 — 칸 비율을 나중에 손대도 찌그러지지 않게. */
@@ -454,9 +456,9 @@ img{display:block;max-width:100%}
 /* ── 신랑·신부 ──
    위 여백은 섹션의 padding 으로 줍니다. 첫 자식(.sign)의 margin-top 으로
    주면 padding-top 이 0 인 부모를 빠져나가(margin collapsing) 섹션 사이에
-   48px 틈이 생기고, 그 틈으로 페이지 바탕이 비쳐 두 장이 끊겨 보입니다. */
+   52.8px 틈이 생기고, 그 틈으로 페이지 바탕이 비쳐 두 장이 끊겨 보입니다. */
 /* 이제 손편지 장 안의 한 덩어리입니다 — 좌우·아래 여백은 장이 갖습니다. */
-.people{padding:58px 0 0; text-align:center}
+.people{padding:63.8px 0 0; text-align:center}
 
 /* ── 신랑·신부 — 눌러서 지금 <-> 아기 때 ── (v1 에서 그대로 옮겨 왔습니다)
    사진 두 장은 어느 쪽을 눌러도 함께 넘어갑니다. 자동 전환이 아니라 누른 만큼만
@@ -464,20 +466,20 @@ img{display:block;max-width:100%}
 /* 편지 아래는 새 챕터가 아니라 편지의 서명란입니다 — 봉투의 "With Love And
    Gratitude, 승건 선화" 를 이어받아 그 두 사람이 나옵니다. 그래서 찢긴 경계로
    자르지 않고 같은 종이에 둡니다.
-   다만 카드가 끝나자마자 사진이 나와 50px 밖에 안 떨어져 있었습니다. 간격을
+   다만 카드가 끝나자마자 사진이 나와 55px 밖에 안 떨어져 있었습니다. 간격을
    벌리고, 전폭 헤어라인 대신 짧은 선 + 영문 라벨로 바꿨습니다
    (포인트색은 영문 라벨 · 짧은 선 · 큰 숫자에만 쓴다는 규칙 그대로). */
-.sign{margin:0 auto 26px; text-align:center}
-.sign span{color:var(--forest); font:600 10px/1 var(--serif); letter-spacing:.34em; text-transform:uppercase}
+.sign{margin:0 auto 28.6px; text-align:center}
+.sign span{color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:.34em; text-transform:uppercase}
 .profiles{
-  display:grid; grid-template-columns:1fr 1fr; gap:16px;
-  max-width:262px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:17.6px;
+  max-width:288.2px; margin:0 auto;
 }
 .profile{margin:0}
 /* display:block + width:100% 가 필요합니다. button 은 기본이 inline-block 이라
    내용(절대 위치 이미지)에 맞춰 폭이 0 으로 줄어듭니다. */
 .profile__card{display:block; position:relative; width:100%; aspect-ratio:1; padding:0; border:0; background:var(--paper-2); cursor:pointer}
-.profile__card::after{content:""; position:absolute; inset:0; border:1px solid transparent; transition:border-color .25s}
+.profile__card::after{content:""; position:absolute; inset:0; border:1.1px solid transparent; transition:border-color .25s}
 /* 테두리는 아기 사진이 떠 있는 동안에만. :hover 는 뺐습니다 — 클릭한 뒤에도 커서가
    카드 위에 남아 누른 쪽만 계속 물들어 보였습니다. */
 .profile__card:focus-visible::after,
@@ -509,16 +511,16 @@ img{display:block;max-width:100%}
    하면 장식으로 읽혀 누를 생각이 잘 들지 않았습니다.
    어떤 사진 위에서도 보이도록 포인트색 채움 + 종이색 외곽선을 paint-order 로 뒤에 깝니다. */
 .profile__cue{
-  position:absolute; right:7px; bottom:7px; width:17px; height:17px;
+  position:absolute; right:7.7px; bottom:7.7px; width:18.7px; height:18.7px;
   fill:var(--forest); stroke:var(--white); stroke-width:1.8;
   stroke-linejoin:round; paint-order:stroke fill;
   animation:tapCue 1.8s linear infinite;
 }
 @keyframes tapCue{
-  0%  {opacity:0; transform:translate(24px,24px) scale(1);      animation-timing-function:ease-out}
-  14% {opacity:1; transform:translate(17px,17px) scale(1);      animation-timing-function:ease-out}
+  0%  {opacity:0; transform:translate(26.4px,26.4px) scale(1);      animation-timing-function:ease-out}
+  14% {opacity:1; transform:translate(18.7px,18.7px) scale(1);      animation-timing-function:ease-out}
   41% {opacity:1; transform:translate(0,0) scale(1);            animation-timing-function:ease-in}
-  55% {opacity:.3;transform:translate(-2.5px,-2.5px) scale(.84);animation-timing-function:ease-out}
+  55% {opacity:.3;transform:translate(-2.75px,-2.75px) scale(.84);animation-timing-function:ease-out}
   75% {opacity:1; transform:translate(0,0) scale(1)}
   89% {opacity:1; transform:translate(0,0) scale(1)}
   /* 끝에서 지워야 다음 바퀴가 밖에서 들어올 때 순간 이동으로 보이지 않습니다 */
@@ -528,47 +530,47 @@ img{display:block;max-width:100%}
 @media (prefers-reduced-motion:reduce){
   .profiles *{animation:none !important}
 }
-.profile figcaption{margin-top:12px; text-align:center; line-height:1.4}
-.profile figcaption i{margin-right:4px; color:var(--body); font:400 12.5px/1 var(--serif); font-style:normal; letter-spacing:.04em}
-.profile figcaption b{color:var(--ink); font-size:13.5px; font-weight:500; letter-spacing:.03em}
+.profile figcaption{margin-top:13.2px; text-align:center; line-height:1.4}
+.profile figcaption i{margin-right:4.4px; color:var(--body); font:400 13.75px/1 var(--serif); font-style:normal; letter-spacing:.04em}
+.profile figcaption b{color:var(--ink); font-size:14.85px; font-weight:500; letter-spacing:.03em}
 
-.parents{max-width:262px; margin:28px auto 0; text-align:center}
-.parents p{margin:10px 0; color:var(--body); font-size:13.5px; letter-spacing:.01em}
-.parents b{margin-left:11px; color:var(--ink); font-size:14.5px; font-weight:500; letter-spacing:.04em}
+.parents{max-width:288.2px; margin:30.8px auto 0; text-align:center}
+.parents p{margin:11px 0; color:var(--body); font-size:14.85px; letter-spacing:.01em}
+.parents b{margin-left:12.1px; color:var(--ink); font-size:15.95px; font-weight:500; letter-spacing:.04em}
 
 /* 조작부는 전부 밑줄·헤어라인으로 맞춥니다 — 알약 버튼 하나만 튀지 않도록. */
 .line-button{
-  display:block; width:max-content; margin:26px auto 0; padding:7px 3px 8px;
-  color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:.2em; text-transform:uppercase;
+  display:block; width:max-content; margin:28.6px auto 0; padding:7.7px 3.3px 8.8px;
+  color:var(--forest); font:600 12.1px/1 var(--serif); letter-spacing:.2em; text-transform:uppercase;
   text-decoration:none;   /* <a> 로도 씁니다(대절버스 신청) */
-  border:0; border-bottom:1px solid var(--hair); background:transparent; cursor:pointer;
+  border:0; border-bottom:1.1px solid var(--hair); background:transparent; cursor:pointer;
   transition:color .2s, border-color .2s;
 }
 .line-button:hover,
 .line-button:active{color:var(--body); border-bottom-color:var(--body)}
 
 dialog{
-  width:calc(100% - 42px); max-width:430px; max-height:82vh; padding:48px 26px 30px;
-  border:1px solid var(--hair); border-radius:4px; color:var(--ink);
-  background:var(--paper); box-shadow:0 25px 80px rgba(10,30,20,.4);
+  width:calc(100% - 46.2px); max-width:473px; max-height:82vh; padding:52.8px 28.6px 33px;
+  border:1.1px solid var(--hair); border-radius:4.4px; color:var(--ink);
+  background:var(--paper); box-shadow:0 27.5px 88px rgba(10,30,20,.4);
 }
-dialog::backdrop{background:rgba(10,30,20,.5); backdrop-filter:blur(3px)}
-dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); text-align:center}
+dialog::backdrop{background:rgba(10,30,20,.5); backdrop-filter:blur(3.3px)}
+dialog h2{margin:0 0 28.6px; color:var(--ink); font:700 24.2px/1.2 var(--serif); text-align:center}
 .dialog-close{
-  position:absolute; top:13px; right:14px; width:34px; height:34px;
-  border:0; background:transparent; color:var(--body); font:300 28px/1 var(--serif); cursor:pointer;
+  position:absolute; top:14.3px; right:15.4px; width:37.4px; height:37.4px;
+  border:0; background:transparent; color:var(--body); font:300 30.8px/1 var(--serif); cursor:pointer;
 }
 .dialog-close:focus{outline:none}
-.dialog-close:focus-visible{outline:1px solid var(--forest); outline-offset:2px}
-.contact-row{display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:8px; padding:11px 0; border-bottom:1px solid var(--hair); font-size:13px}
-.contact-row b{margin-left:6px; color:var(--ink); font:600 14px/1.4 "Noto Serif KR",serif}
+.dialog-close:focus-visible{outline:1.1px solid var(--forest); outline-offset:2.2px}
+.contact-row{display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:8.8px; padding:12.1px 0; border-bottom:1.1px solid var(--hair); font-size:14.3px}
+.contact-row b{margin-left:6.6px; color:var(--ink); font:600 15.4px/1.4 "Noto Serif KR",serif}
 .contact-row a{
-  padding:5px 11px; color:var(--forest); font-size:12px; letter-spacing:.04em;
-  text-decoration:none; border:1px solid var(--hair); border-radius:2px;
+  padding:5.5px 12.1px; color:var(--forest); font-size:13.2px; letter-spacing:.04em;
+  text-decoration:none; border:1.1px solid var(--hair); border-radius:2.2px;
   transition:color .2s, background-color .2s, border-color .2s;
 }
 .contact-row a:active{color:var(--white); border-color:var(--forest); background:var(--forest)}
-.contact-row a:focus-visible{outline:1px solid var(--forest); outline-offset:2px}
+.contact-row a:focus-visible{outline:1.1px solid var(--forest); outline-offset:2.2px}
 
 /* ── 달력 ──
    이 장만 어둡습니다. 앞뒤가 다 종이색이라 한 장이 뒤집히면 예식일이
@@ -577,35 +579,35 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
 .cal{container-type:inline-size; color:var(--forest)}
 /* 레퍼런스처럼 큰 숫자는 왼쪽, 월 이름은 장의 오른쪽 끝에 세로로 세웁니다. */
 .cal .label{text-align:center}
-.cal__head{position:relative; display:flex; align-items:flex-start; justify-content:space-between; margin-top:26px}
+.cal__head{position:relative; display:flex; align-items:flex-start; justify-content:space-between; margin-top:28.6px}
 .cal__num{
   margin:0; color:var(--forest); font:700 34cqw/.78 var(--serif);
   letter-spacing:-.03em;
 }
 /* 월 이름은 세로로 세워 큰 숫자 옆에 둡니다(레퍼런스와 같은 자리). */
 .cal__month{
-  margin:14px 2px 0 0; writing-mode:vertical-rl;
+  margin:15.4px 2.2px 0 0; writing-mode:vertical-rl;
   /* 우편번호 숫자와 같은 서체(--title = Noto Sans KR 700). */
-  color:var(--forest); font:700 9.5px/1 var(--title);
+  color:var(--forest); font:700 10.45px/1 var(--title);
   letter-spacing:.34em; text-transform:uppercase;
 }
 
-.cal__grid{width:100%; margin:34px 0 0; border-collapse:collapse; table-layout:fixed}
+.cal__grid{width:100%; margin:37.4px 0 0; border-collapse:collapse; table-layout:fixed}
 .cal__grid th{
-  padding:0 0 16px; color:var(--forest); font:600 9px/1 var(--serif);
+  padding:0 0 17.6px; color:var(--forest); font:600 9.9px/1 var(--serif);
   /* .62 면 베이지 위에서 3.3:1 로 작은 글자에 모자랍니다. */
   letter-spacing:.2em; text-transform:uppercase; opacity:.82;
 }
 .cal__grid td{
-  position:relative; height:44px; padding:0; text-align:center; vertical-align:middle;
-  color:var(--forest); font:400 15px/1 var(--serif); letter-spacing:.02em;
+  position:relative; height:48.4px; padding:0; text-align:center; vertical-align:middle;
+  color:var(--forest); font:400 16.5px/1 var(--serif); letter-spacing:.02em;
 }
 /* 예식일 — 손으로 그린 동그라미 이미지. Save the date 와 같은 손글씨라
    알파만 빌려 --forest 로 구웠습니다(원본 #5cb35a 는 이 바탕에서 옅습니다).
    잉크 1050x740 -> 비율 1.419. 숫자보다 한참 커야 그린 티가 나서 칸 너비의
    1.85 배로 두고 가운데에 겹칩니다. 2.2 배는 옆 칸 28 을 덮었습니다.
    자리는 차지하지 않습니다. */
-.cal__day{position:relative; display:inline-grid; place-content:center; width:34px; height:34px}
+.cal__day{position:relative; display:inline-grid; place-content:center; width:37.4px; height:37.4px}
 .cal__day::before{
   content:""; position:absolute; left:44%; top:52%;
   width:185%; aspect-ratio:1050/740;
@@ -617,10 +619,10 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
    원본 초록 #79ba7a 는 이 장 바탕(#e4dbca) 위에서 1.68:1 밖에 안 됩니다.
    예식일이 SUN 칸(맨 왼쪽)이라 왼쪽으로 흘리면 장 밖으로 잘려서
    동그라미 오른쪽에서 시작하게 둡니다. */
-.cal__dday b{margin:0 .12em 0 .1em; color:var(--forest); font:700 22px/1 var(--title); vertical-align:-.06em}
+.cal__dday b{margin:0 .12em 0 .1em; color:var(--forest); font:700 24.2px/1 var(--title); vertical-align:-.06em}
 .cal__dday{
-  margin:84px 0 0; color:var(--body);
-  font:400 15px/1 var(--kr); letter-spacing:.02em;
+  margin:92.4px 0 0; color:var(--body);
+  font:400 16.5px/1 var(--kr); letter-spacing:.02em;
   text-align:center;
 }
 .cal__save{
@@ -628,11 +630,11 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
      칸(마지막 줄 Sun)이 비어서 손글씨를 거기 매달고 왼쪽으로 흘립니다 —
      레퍼런스와 같은 자리입니다. 기울이지 않습니다(상자가 부풀어 옆
      숫자를 건드립니다). */
-  position:absolute; right:-6%; top:-6px; z-index:2;
-  /* 폭은 칸(td) 기준입니다 — cqw 는 컨테이너가 예상과 달라 47px 로 잡혔습니다.
+  position:absolute; right:-6%; top:-6.6px; z-index:2;
+  /* 폭은 칸(td) 기준입니다 — cqw 는 컨테이너가 예상과 달라 51.7px 로 잡혔습니다.
      칸 하나가 표 폭의 1/7 이라 320% 면 세 칸 조금 넘습니다. 잉크 217x90. */
   width:330%;
-  max-width:none;   /* 전역 img{max-width:100%} 가 칸 폭(46px)으로 잘라냅니다 */
+  max-width:none;   /* 전역 img{max-width:100%} 가 칸 폭(50.6px)으로 잘라냅니다 */
   pointer-events:none;
 }
 
@@ -649,14 +651,14 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
 .location{
   text-align:center;   /* 색은 다른 장과 같은 토큰을 그대로 씁니다 */
 }
-.location__venue{margin:6px 0 4px; color:var(--ink); font:500 16px/1.4 var(--kr); letter-spacing:.02em}
-.location__hall{margin:0; color:var(--body); font:400 13px/1.4 var(--kr)}
+.location__venue{margin:6.6px 0 4.4px; color:var(--ink); font:500 17.6px/1.4 var(--kr); letter-spacing:.02em}
+.location__hall{margin:0; color:var(--body); font:400 14.3px/1.4 var(--kr)}
 
-.map-box{margin:24px -4px 0}
-.map-box__addr{display:flex; align-items:center; justify-content:center; gap:8px; margin:6px 0 0}
-.map-box__addr span{color:var(--body); font-size:11px; letter-spacing:.01em}
+.map-box{margin:26.4px -4.4px 0}
+.map-box__addr{display:flex; align-items:center; justify-content:center; gap:8.8px; margin:6.6px 0 0}
+.map-box__addr span{color:var(--body); font-size:12.1px; letter-spacing:.01em}
 .map-box__addr button{flex:none; padding:0; border:0; background:none; cursor:pointer; line-height:0}
-.map-box__addr svg{width:13px; height:13px; fill:none; stroke:var(--body); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.map-box__addr svg{width:14.3px; height:14.3px; fill:none; stroke:var(--body); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
 /* 지도 대신 예식장 그림. 원본이 흰 종이에 연한 회색 선이라 그대로 얹으면
    흰 네모가 생깁니다. 선의 진하기를 뒤집어 알파로 쓰고(gain 4.5) 포인트색
    #2b4632 로 구워 선만 남겼습니다 — 손글씨·동그라미와 같은 방식입니다.
@@ -664,58 +666,58 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
    파일 이름에 색을 붙인 이유: 같은 이름으로 다시 구우면 브라우저가 옛
    그림을 캐시에서 꺼내 씁니다 — 종이색으로 구운 옛것은 흰 바탕에서
    안 보여서 "판화가 사라졌다"로 나타났습니다. */
-.venue{display:block; width:86%; margin:24px auto 16px; opacity:.92}
+.venue{display:block; width:86%; margin:26.4px auto 17.6px; opacity:.92}
 
 /* 레퍼런스처럼 낱개 알약 세 개. 테두리만으로는 약해서 아주 옅은
    초록 판을 깔았습니다. */
-.map-buttons{display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:22px 0 0; border:0}
+.map-buttons{display:grid; grid-template-columns:repeat(3,1fr); gap:9.9px; margin:24.2px 0 0; border:0}
 .map-buttons a{
-  display:flex; align-items:center; justify-content:center; gap:6px; padding:13px 2px;
-  border:1px solid var(--hair); border-radius:10px; background:rgba(43,70,50,.04);
-  color:var(--ink); font:400 12px/1 var(--kr); letter-spacing:.01em;
+  display:flex; align-items:center; justify-content:center; gap:6.6px; padding:14.3px 2.2px;
+  border:1.1px solid var(--hair); border-radius:11px; background:rgba(43,70,50,.04);
+  color:var(--ink); font:400 13.2px/1 var(--kr); letter-spacing:.01em;
   text-decoration:none; white-space:nowrap; transition:background .2s;
 }
 .map-buttons a:active{background:rgba(43,70,50,.09)}
 /* 레퍼런스와 같은 표시 — 네이버는 N, 카카오는 말풍선, 티맵은 T.
    글자는 우편번호·December 와 같은 서체(--title)로 굵게. */
-.map-buttons a b{flex:none; font:700 13px/1 var(--title)}
+.map-buttons a b{flex:none; font:700 14.3px/1 var(--title)}
 .map-buttons a svg{
-  flex:none; width:15px; height:15px;
+  flex:none; width:16.5px; height:16.5px;
   fill:none; stroke:currentColor; stroke-width:1.6;
   stroke-linecap:round; stroke-linejoin:round;
 }
 
-.directions{margin:32px 0 0; text-align:left}
-.direction-group{margin-bottom:34px}
+.directions{margin:35.2px 0 0; text-align:left}
+.direction-group{margin-bottom:37.4px}
 .direction-group:last-child{margin-bottom:0}
 .direction-group__title{
-  display:flex; align-items:center; gap:7px; margin:0 0 2px; padding-bottom:9px;
-  border-bottom:1px solid var(--hair);
-  color:var(--ink); font:500 13.5px/1 var(--kr); letter-spacing:.06em;
+  display:flex; align-items:center; gap:7.7px; margin:0 0 2.2px; padding-bottom:9.9px;
+  border-bottom:1.1px solid var(--hair);
+  color:var(--ink); font:500 14.85px/1 var(--kr); letter-spacing:.06em;
 }
-.direction-group__icon{flex:none; width:17px; height:17px; fill:none; stroke:var(--body); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
-.direction{margin-top:7px}
-.direction--titled{margin-top:22px}
-.direction:first-of-type{margin-top:14px}
+.direction-group__icon{flex:none; width:18.7px; height:18.7px; fill:none; stroke:var(--body); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round}
+.direction{margin-top:7.7px}
+.direction--titled{margin-top:24.2px}
+.direction:first-of-type{margin-top:15.4px}
 /* 내비 검색 / 주차 위치 / 예식장까지 / 주차 등록 — 아래 설명보다 한 단
    위라 굵기와 밝기로 띄웁니다. 갈래 제목(500)과 본문(400) 사이입니다. */
-.direction__label{display:block; margin-bottom:5px; color:var(--ink); font-size:12px; font-weight:600; letter-spacing:.04em}
-.direction p{margin:0; color:var(--body); font-size:13px; line-height:1.85; white-space:pre-line}
+.direction__label{display:block; margin-bottom:5.5px; color:var(--ink); font-size:13.2px; font-weight:600; letter-spacing:.04em}
+.direction p{margin:0; color:var(--body); font-size:14.3px; line-height:1.85; white-space:pre-line}
 
 /* 노선 번호·유형은 속을 비우고 테두리만 둔 칩입니다 — 실제 노선 색을
    채우면 칩만 알록달록 튀고 숫자보다 칩이 먼저 읽혔습니다.
    글자는 포인트색으로 10.03:1, 테두리는 장식이라 .45 로 둡니다.
-   테두리 1px 이 안쪽을 깎으므로 17 -> 18px 로 키웠습니다. */
-.line-no{display:inline-grid; place-content:center; width:18px; height:18px; margin-right:5px; border:1px solid rgba(43,70,50,.45); border-radius:50%; color:var(--forest); font:600 10px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
-.bus-tag{display:inline-grid; place-content:center; min-width:34px; height:18px; margin-right:7px; padding:0 6px; border:1px solid rgba(43,70,50,.45); border-radius:3px; color:var(--forest); font:600 10px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
+   테두리 1.1px 이 안쪽을 깎으므로 17 -> 19.8px 로 키웠습니다. */
+.line-no{display:inline-grid; place-content:center; width:19.8px; height:19.8px; margin-right:5.5px; border:1.1px solid rgba(43,70,50,.45); border-radius:50%; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
+.bus-tag{display:inline-grid; place-content:center; min-width:37.4px; height:19.8px; margin-right:7.7px; padding:0 6.6px; border:1.1px solid rgba(43,70,50,.45); border-radius:3.3px; color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:0; vertical-align:.15em}
 
 /* 갈래 제목 바로 밑에 붙습니다. 목록보다 한 단 작게 두어 설명이 아니라
    덧붙이는 말로 읽힙니다. 
  은 white-space:pre-line 이 줄로 바꿉니다. */
 .transport__notice{
-  margin:12px 0 0; padding:0 0 0 12px;
-  border-left:1px solid var(--forest);
-  color:var(--body); font-size:11.5px; line-height:1.8;
+  margin:13.2px 0 0; padding:0 0 0 13.2px;
+  border-left:1.1px solid var(--forest);
+  color:var(--body); font-size:12.65px; line-height:1.8;
   text-align:left; white-space:pre-line;
 }
 
@@ -728,46 +730,46 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
    세 가지를 제목 한 줄 + 본문 한 덩어리로 나란히 놓습니다. dl 이라
    낭독기도 "무엇: 무슨 내용" 으로 묶어 읽습니다. */
 .info{text-align:center}
-.info__list{margin:26px 0 0; padding:0}
+.info__list{margin:28.6px 0 0; padding:0}
 .info__list dt{
   margin:0; color:var(--ink);
-  font:700 16.5px/1.5 var(--kr); letter-spacing:.02em;
+  font:700 18.15px/1.5 var(--kr); letter-spacing:.02em;
 }
 .info__list dd{
-  margin:9px 0 0; color:var(--body);
-  font-size:14.5px; line-height:1.85; word-break:keep-all;
+  margin:9.9px 0 0; color:var(--body);
+  font-size:15.95px; line-height:1.85; word-break:keep-all;
 }
 /* 항목 사이만 벌립니다 — 첫 제목은 위 여백을 그대로 씁니다. */
-.info__list dd + dt{margin-top:30px}
+.info__list dd + dt{margin-top:33px}
 /* 신청 단추는 항목 안에 붙으므로 위 간격만 줄입니다. 한글이라 자간을 좁힙니다. */
-.info__list .line-button{margin-top:14px; font-family:var(--kr); letter-spacing:.08em; font-size:12px}
+.info__list .line-button{margin-top:15.4px; font-family:var(--kr); letter-spacing:.08em; font-size:13.2px}
 
-/* 이 장만 위아래를 좁힙니다. 위는 안내사항의 찢긴 끝(34px)이 들어와 있어
+/* 이 장만 위아래를 좁힙니다. 위는 안내사항의 찢긴 끝(37.4px)이 들어와 있어
    그보다 넉넉히, 아래는 바로 공유 단추가 이어지므로 짧게. */
-.gift{padding:56px 30px 40px; text-align:center}
-.gift__lead{margin:22px 0 30px; color:var(--body); font-size:13px; line-height:1.95; word-break:keep-all}
+.gift{padding:61.6px 33px 44px; text-align:center}
+.gift__lead{margin:24.2px 0 33px; color:var(--body); font-size:14.3px; line-height:1.95; word-break:keep-all}
 .gift__lead b{color:var(--ink); font-weight:500}
 
-.gift-tabs{display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--hair)}
+.gift-tabs{display:grid; grid-template-columns:1fr 1fr; border-bottom:1.1px solid var(--hair)}
 .gift-tab{
-  padding:13px 4px 14px; border:0; border-bottom:2px solid transparent;
-  color:var(--body); background:none; font:400 14px/1 var(--kr); cursor:pointer;
+  padding:14.3px 4.4px 15.4px; border:0; border-bottom:2.2px solid transparent;
+  color:var(--body); background:none; font:400 15.4px/1 var(--kr); cursor:pointer;
   transition:color .2s, border-color .2s;
 }
 .gift-tab.is-active{color:var(--ink); border-bottom-color:var(--forest)}
 
-.gift-list{display:grid; margin-top:2px; text-align:left}
-.gift-row{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:16px 2px; border-bottom:1px solid var(--hair)}
-.gift-row__who{color:var(--ink); font-size:14px}
-.gift-row__who small{color:var(--body); font-size:12.5px}
-.gift-row__who i{margin:0 7px; color:var(--hair); font-style:normal}
+.gift-list{display:grid; margin-top:2.2px; text-align:left}
+.gift-row{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:11px; padding:17.6px 2.2px; border-bottom:1.1px solid var(--hair)}
+.gift-row__who{color:var(--ink); font-size:15.4px}
+.gift-row__who small{color:var(--body); font-size:13.75px}
+.gift-row__who i{margin:0 7.7px; color:var(--hair); font-style:normal}
 .gift-row__who b{font-weight:500; letter-spacing:.02em}
 .gift-row__acc{text-align:center}
-.gift-row__bank{display:block; margin-bottom:4px; color:var(--body); font-size:11.5px}
-.gift-row__num{display:block; color:var(--body); font-size:14px; letter-spacing:.02em}
+.gift-row__bank{display:block; margin-bottom:4.4px; color:var(--body); font-size:12.65px}
+.gift-row__num{display:block; color:var(--body); font-size:15.4px; letter-spacing:.02em}
 .gift-copy{
-  padding:4px 1px 5px; border:0; border-bottom:1px solid var(--hair);
-  color:var(--body); background:none; font:600 10px/1 var(--serif);
+  padding:4.4px 1.1px 5.5px; border:0; border-bottom:1.1px solid var(--hair);
+  color:var(--body); background:none; font:600 11px/1 var(--serif);
   letter-spacing:.14em; text-transform:uppercase; white-space:nowrap; cursor:pointer;
 }
 .gift-copy:active{color:var(--forest); border-bottom-color:var(--forest)}
@@ -779,35 +781,48 @@ dialog h2{margin:0 0 26px; color:var(--ink); font:700 22px/1.2 var(--serif); tex
 /* ── 공유 = 마지막 장 ──
    동그란 단추 둘(카카오·링크)을 가운데 놓고, 그 밑에 사진 한 장을 좌우
    꽉 채워 페이지를 닫습니다. 아래 여백은 0 — 사진이 곧 끝입니다. */
-.share{padding:40px 30px 0}
-.share-links{display:flex; justify-content:center; gap:40px}
+.share{padding:44px 33px 0}
+.share-links{display:flex; justify-content:center; gap:44px}
 .share-links button{
-  display:flex; flex-direction:column; align-items:center; gap:12px;
+  display:flex; flex-direction:column; align-items:center; gap:13.2px;
   padding:0; border:0; background:transparent; color:var(--body); cursor:pointer;
 }
 /* 원판은 반 톤 짙은 종이색, 그림은 먹색. 눌리면 원판이 포인트색으로. */
 .share-links i{
-  display:grid; place-content:center; width:74px; height:74px;
+  display:grid; place-content:center; width:81.4px; height:81.4px;
   border-radius:50%; background:var(--paper-2); color:var(--ink);
   transition:background .2s, color .2s;
 }
 .share-links button:active i{background:var(--forest); color:var(--paper)}
-.share-links svg{width:26px; height:26px; fill:currentColor}
+.share-links svg{width:28.6px; height:28.6px; fill:currentColor}
 .share-links svg.is-line{fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round}
 /* 우편번호·December 와 같은 서체. 복사 뒤엔 여기 글자가 "복사됨"으로 잠깐 바뀝니다. */
-.share-links b{font:700 12px/1 var(--title); letter-spacing:.06em; text-transform:uppercase}
-/* 장 여백(30px)을 되물려 좌우 끝까지. 사진 하늘이 회청색(230 237 245)이라
+.share-links b{font:700 13.2px/1 var(--title); letter-spacing:.06em; text-transform:uppercase}
+/* 장 여백(33px)을 되물려 좌우 끝까지. 사진 하늘이 회청색(230 237 245)이라
    그냥 맞대면 가로줄로 끊깁니다. 위 34% 를 마스크로 투명하게 걷어 장의
    종이결이 그대로 사진 속으로 이어지게 합니다 — 평평한 색을 덮는 방식은
    종이결이 끝나는 자리가 선으로 남았습니다. 그라데이션 마스크라 file://
    에서도 막히지 않습니다(막히는 건 url() 그림 마스크입니다). */
-.share__photo{margin:4px -30px 0}
+.share__photo{margin:4.4px -33px 0}
 .share__photo img{
   display:block; width:100%;
   -webkit-mask-image:linear-gradient(to bottom, transparent, #000 34%);
           mask-image:linear-gradient(to bottom, transparent, #000 34%);
 }
 
+
+/* 손가락 기기에서는 포커스 테두리를 그리지 않습니다. 확대 보기를 열면 첫 단추(×)에,
+   닫으면 더미에 포커스가 가고 iOS 는 그걸 키보드 포커스로 봐서 초록 상자를 그립니다.
+   스타일 맨 끝에 두는 이유: 같은 세기의 규칙은 뒤에 쓴 것이 이깁니다 — 앞에 두었을 때
+   .dialog-close:focus-visible 이 이 규칙을 덮어 × 상자가 남았습니다.
+   키보드로 다니는 마우스 기기에는 그대로 남습니다. */
+@media (hover:none){
+  .stack:focus, .stack:focus-visible,
+  .dialog-close:focus, .dialog-close:focus-visible,
+  .lb__nav:focus, .lb__nav:focus-visible,
+  .deck__nav:focus, .deck__nav:focus-visible,
+  .reel__nav:focus, .reel__nav:focus-visible{outline:none}
+}
 </style>
 </head>
 <body>
@@ -1226,6 +1241,13 @@ stack.addEventListener("keydown", (e) => {
 });
 
 lightbox.querySelector(".dialog-close").addEventListener("click", () => lightbox.close());
+// 손가락 기기에서는 포커스 자체를 비웁니다 — 열면 ×에, 닫으면 더미에 포커스가 가서
+// iOS 가 초록 상자를 그립니다. 키보드 사용자는 포커스가 있어야 하니 마우스 기기는 그대로.
+const TOUCH = matchMedia("(hover:none)").matches;
+if (TOUCH) {
+  stack.addEventListener("click", () => setTimeout(() => lightbox.querySelector(".dialog-close").blur(), 0));
+  lightbox.addEventListener("close", () => setTimeout(() => stack.blur(), 0));
+}
 lightbox.querySelector(".lb__nav--prev").addEventListener("click", () => go(-1));
 lightbox.querySelector(".lb__nav--next").addEventListener("click", () => go(1));
 // 사진 바깥(어두운 바탕)을 누르면 닫습니다. 사진이나 단추를 눌렀을 때는 아닙니다.
@@ -1270,10 +1292,10 @@ render(false);
 
 // 찢긴 띠의 종이결을 윗장에서 이어 붙입니다. 배경 타일은 요소마다 제
 // 왼쪽 위에서 다시 시작하므로, 띠가 시작하는 지점의 결 위상만큼 당깁니다.
-// paper.jpg 는 512x512 를 512px 로 깔아 타일 한 장이 정확히 512px 입니다.
+// paper.jpg 는 512x512 를 563.2px(512 x 1.1)로 깔아 타일 한 장이 563.2px 입니다.
 // 찢긴 띠의 종이결을 제 장에서 이어 붙입니다. 띠는 장의 아랫변에서
 // 시작하므로 그 지점의 결 위상만큼 당깁니다.
-// paper.jpg 는 512x512 를 512px 로 깔아 타일 한 장이 정확히 512px 입니다.
+// paper.jpg 는 512x512 를 563.2px(512 x 1.1)로 깔아 타일 한 장이 563.2px 입니다.
 function alignTears() {
   document.querySelectorAll(".tear > i").forEach((strip) => {
     const sheet = strip.closest(".sheet");
@@ -1283,7 +1305,7 @@ function alignTears() {
     strip.style.backgroundColor = above.backgroundColor;
     strip.style.backgroundImage = above.backgroundImage;
     const lap = parseFloat(getComputedStyle(strip).getPropertyValue("--tear-lap")) || 0;
-    strip.style.backgroundPositionY = -((sheet.offsetHeight - lap) % 512) + "px";
+    strip.style.backgroundPositionY = -((sheet.offsetHeight - lap) % 563.2) + "px";
   });
 }
 alignTears();
