@@ -504,16 +504,14 @@ img{display:block;max-width:100%}
 /* 제목 밑 한 줄 안내(눌러보세요 / 넘겨보세요). 표지 본문과 같은 Pretendard. */
 /* 안내 한 줄 — 상자 없이 글만. 흐리게 하지 않고 포인트색으로 세우고, 앞에 작은
    그림(손가락 / 양쪽 화살표)을 붙여 글을 읽기 전에 동작이 먼저 보이게.
-   그리고 천천히 흔들립니다: 신랑·신부 쪽은 누르듯 위아래로, 갤러리 쪽은 미는 방향
-   따라 좌우로. 한 번에 2px 안쪽이라 글은 읽히고 눈만 갑니다. */
+   그리고 가운데를 축으로 천천히 좌우로 기울어집니다(±2도). 글은 읽히고 눈만 갑니다. */
 .hint{
   display:inline-flex; align-items:center; gap:6.6px; margin:11px 0 30.8px;
   color:var(--forest); font:400 12.65px/1.4 var(--display); letter-spacing:.01em;
-  animation:hintPress 2.4s ease-in-out infinite;
+  transform-origin:50% 50%;
+  animation:hintSway 2.4s ease-in-out infinite;   /* 가운데를 축으로 \ | / 하고 기울어집니다 */
 }
-.gal .hint{animation-name:hintSwipe}
-@keyframes hintPress{ 0%,100%{translate:0 0} 50%{translate:0 2.2px} }
-@keyframes hintSwipe{ 0%,100%{translate:0 0} 25%{translate:-3.3px 0} 75%{translate:3.3px 0} }
+@keyframes hintSway{ 0%,100%{rotate:-2deg} 50%{rotate:2deg} }
 @media (prefers-reduced-motion:reduce){ .hint{animation:none} }
 .hint svg{flex:none; width:15.4px; height:15.4px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 .hint b{font-weight:500}
