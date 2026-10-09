@@ -508,7 +508,7 @@ img{display:block;max-width:100%}
    따라 좌우로. 한 번에 2px 안쪽이라 글은 읽히고 눈만 갑니다. */
 .hint{
   display:inline-flex; align-items:center; gap:6.6px; margin:11px 0 30.8px;
-  color:var(--forest); font:500 12.65px/1.4 var(--display); letter-spacing:.01em;
+  color:var(--forest); font:400 12.65px/1.4 var(--display); letter-spacing:.01em;
   animation:hintPress 2.4s ease-in-out infinite;
 }
 .gal .hint{animation-name:hintSwipe}
@@ -516,7 +516,7 @@ img{display:block;max-width:100%}
 @keyframes hintSwipe{ 0%,100%{translate:0 0} 25%{translate:-3.3px 0} 75%{translate:3.3px 0} }
 @media (prefers-reduced-motion:reduce){ .hint{animation:none} }
 .hint svg{flex:none; width:15.4px; height:15.4px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
-.hint b{font-weight:600}
+.hint b{font-weight:500}
 /* 두 줄짜리(갤러리)는 가운데 맞추고 줄 사이를 조금 띄웁니다. */
 .hint span{text-align:left}
 .sign span{color:var(--forest); font:600 11px/1 var(--serif); letter-spacing:.34em; text-transform:uppercase}
