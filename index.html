@@ -210,7 +210,7 @@
   --title:"Noto Sans KR",sans-serif;
   /* 표지(v1)가 쓰는 두 가지. */
   --display:"Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;
-  --tear-h:15px;      /* 37.4 -> 22 -> 15. 찢긴 결이 격해서 그림을 세로로 눌러 잔잔하게 */
+  --tear-h:22px;      /* 37.4 -> 22. 찢긴 결이 격해서 그림을 세로로 눌러 잔잔하게. 신랑·신부 위아래만 15 */
   --tear-lap:5.5px;     /* 띠 윗머리가 제 장 안으로 겹치는 깊이 */
 }
 *{box-sizing:border-box}
@@ -405,6 +405,7 @@ img{display:block;max-width:100%}
    잠겨 끝나므로 같은 색 베일을 위 110px 에 덮어 종이결이 서서히
    드러나게 합니다 — v1 의 .greeting 과 같은 방식입니다. */
 .note{
+  --tear-h:15px;
   text-align:center;   /* 위·양옆 여백은 .sheet 것을 그대로, 아래는 편지지 밑으로 넉넉히 */
   padding-bottom:88px;
 }
@@ -478,6 +479,7 @@ img{display:block;max-width:100%}
    위는 손편지 장의 찢긴 띠가 내려오고, 아래는 제 찢긴 띠로 갤러리와 나뉩니다.
    글자는 토큰만 뒤집어 흰 계열로. */
 .people{
+  --tear-h:15px;
   padding:85.8px 33px 72.6px; text-align:center;
   background-color:#2b4632; background-image:none;
   --ink:var(--paper);                 /* 이름 10.08:1 */
@@ -542,8 +544,7 @@ img{display:block;max-width:100%}
    어떤 사진 위에서도 보이도록 포인트색 채움 + 종이색 외곽선을 paint-order 로 뒤에 깝니다. */
 .profile__cue{
   position:absolute; right:7.7px; bottom:7.7px; width:18.7px; height:18.7px;
-  fill:var(--forest); stroke:var(--white); stroke-width:1.8;
-  stroke-linejoin:round; paint-order:stroke fill;
+  fill:var(--forest);
   animation:tapCue 1.8s linear infinite;
 }
 @keyframes tapCue{
