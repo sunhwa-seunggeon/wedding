@@ -84,7 +84,7 @@
 .reel__nav--next{right:0}
 
 .stack{
-  position:relative; width:84%; margin:33px auto 0;
+  position:relative; width:84%; margin:0 auto;
   aspect-ratio:812/1215;   /* 폴라로이드 원본 비율 */
   cursor:zoom-in; -webkit-tap-highlight-color:transparent;
   touch-action:pan-y;                  /* 세로 스크롤은 페이지에 넘깁니다 */
@@ -506,7 +506,7 @@ img{display:block;max-width:100%}
    그림(손가락 / 양쪽 화살표)을 붙여 글을 읽기 전에 동작이 먼저 보이게.
    그리고 2.6초마다 반 초쯤 진동하듯 떨립니다. 글은 읽히고 눈만 갑니다. */
 .hint{
-  display:inline-flex; align-items:center; gap:6.6px; margin:11px 0 17.6px;
+  display:flex; width:max-content; align-items:center; gap:6.6px; margin:11px auto 17.6px;
   color:var(--forest); font:300 12.65px/1.4 var(--display); letter-spacing:.01em;
   transform-origin:50% 50%;
   animation:hintBuzz 2.6s linear infinite;   /* 진동 — 0.5초 빠르게 떨고 2초 쉬기 */
