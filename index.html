@@ -405,8 +405,8 @@ img{display:block;max-width:100%}
    잠겨 끝나므로 같은 색 베일을 위 110px 에 덮어 종이결이 서서히
    드러나게 합니다 — v1 의 .greeting 과 같은 방식입니다. */
 .note{
-  text-align:center;   /* 위·양옆 여백은 .sheet 것을 그대로, 아래만 좁힙니다 — 연락하기 밑이 너무 비었습니다 */
-  padding-bottom:33px;
+  text-align:center;   /* 위·양옆 여백은 .sheet 것을 그대로, 아래는 편지지 밑으로 조금 짧게 */
+  padding-bottom:44px;
 }
 /* 베일은 바탕 레이어가 아니라 ::before 입니다 — 레이어에 두면 이 장 끝에
    달린 찢긴 띠가 background-image 를 통째로 복사해 가서 띠까지 베일 색이
@@ -473,7 +473,29 @@ img{display:block;max-width:100%}
    주면 padding-top 이 0 인 부모를 빠져나가(margin collapsing) 섹션 사이에
    52.8px 틈이 생기고, 그 틈으로 페이지 바탕이 비쳐 두 장이 끊겨 보입니다. */
 /* 이제 손편지 장 안의 한 덩어리입니다 — 좌우·아래 여백은 장이 갖습니다. */
-.people{padding:63.8px 0 0; text-align:center}
+/* ── 신랑·신부 = 초록 장 ──
+   종이 위에서 잘 안 보인다고 해서 오시는 길에 쓰던 초록 통짜 바탕으로 옮겼습니다.
+   위는 손편지 장의 종이색(#f1efea = --paper x 종이결 평균)에서 초록으로 그라데이션,
+   아래는 찢긴 띠로 갤러리와 나뉩니다. 그라데이션은 바탕 레이어가 아니라 ::before —
+   레이어에 두면 장 끝의 찢긴 띠가 background-image 를 통째로 복사해 가서
+   띠까지 종이색으로 시작합니다. 글자는 토큰만 뒤집어 흰 계열로. */
+.people{
+  padding:121px 33px 72.6px; text-align:center;
+  background-color:#2b4632; background-image:none;
+  --ink:var(--paper);                 /* 이름 10.08:1 */
+  --body:#c6d2c8;                     /* 라벨·혼주 7.30:1 */
+  --hair:rgba(246,244,239,.22);
+  --forest:var(--paper);              /* GROOM & BRIDE, 연락하기 */
+  --paper-2:rgba(246,244,239,.10);    /* 사진 자리 바탕 */
+}
+.people::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:99px; z-index:0;
+  background:linear-gradient(#f1efea, rgba(43,70,50,0)); pointer-events:none;
+}
+.people > *{position:relative}      /* 베일 위로 */
+.people .hint{opacity:.9}
+.people .profile__card::after,
+.people .profiles.is-baby .profile__card::after{border-color:rgba(246,244,239,.5)}
 
 /* ── 신랑·신부 — 눌러서 지금 <-> 아기 때 ── (v1 에서 그대로 옮겨 왔습니다)
    사진 두 장은 어느 쪽을 눌러도 함께 넘어갑니다. 자동 전환이 아니라 누른 만큼만
@@ -910,7 +932,9 @@ button.line-button{font-family:var(--kr); letter-spacing:.08em; font-size:13.2px
          src="./images/hand/sign.webp" alt="승건 · 선화 올림" />
   </div>
 
-  <div class="people">
+</section>
+
+<section class="sheet people">
     <div class="sign"><span>Groom &amp; Bride</span></div>
     <p class="hint">클릭해보세요!</p>
     <div class="profiles">
@@ -936,7 +960,6 @@ button.line-button{font-family:var(--kr); letter-spacing:.08em; font-size:13.2px
       <p>강승묵 · 심정미 의 장녀 <b>선화</b></p>
     </div>
     <button class="line-button" type="button" data-open="contact">연락하기</button>
-  </div>
   <div class="tear" style="--edge:var(--edge-c)"><i></i></div>
 </section>
 
@@ -1548,10 +1571,10 @@ renderGift();
 // 같은 순간에 들어온 것들만 140ms 씩 시차를 둡니다(혼자 들어오면 바로). 한 번 보이면 끊습니다.
 // 오시는 길 목록은 스크립트가 만들기 때문에 이 블록은 스크립트 맨 끝에 있어야 합니다.
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const CHUNKS = [".tear", ".factsheet", ".people", ".info__list", ".directions", ".map-box"];
+  const CHUNKS = [".tear", ".factsheet", ".info__list", ".directions", ".map-box"];
   const targets = document.querySelectorAll(
     ".sheet > " + CHUNKS.map((c) => ":not(" + c + ")").join("") +
-    ", .factsheet div, .people > *, .info__list > *, .direction-group, .map-box > *");
+    ", .factsheet div, .info__list > *, .direction-group, .map-box > *");
   targets.forEach((el) => el.classList.add("reveal"));
   const io = new IntersectionObserver((entries, self) => {
     entries.filter((e) => e.isIntersecting).forEach((e, i) => {
