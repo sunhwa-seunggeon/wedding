@@ -488,7 +488,6 @@ img{display:block;max-width:100%}
   --forest:var(--paper);              /* GROOM & BRIDE, 연락하기 */
   --paper-2:rgba(246,244,239,.10);    /* 사진 자리 바탕 */
 }
-.people .hint{opacity:.9}
 .people .profile__card:focus-visible::after{border-color:rgba(246,244,239,.5)}
 
 /* ── 신랑·신부 — 눌러서 지금 <-> 아기 때 ── (v1 에서 그대로 옮겨 왔습니다)
@@ -509,8 +508,11 @@ img{display:block;max-width:100%}
   display:flex; width:max-content; align-items:center; gap:6.6px; margin:11px auto 17.6px;
   color:var(--forest); font:300 11.55px/1.25 var(--display); letter-spacing:.01em;
   transform-origin:50% 50%;
-  animation:hintBuzz 2.6s linear infinite;   /* 진동 — 0.5초 빠르게 떨고 2초 쉬기 */
 }
+/* 진동은 드러난 뒤에만 — 드러나기 전에 걸면 애니메이션의 translate 가 .reveal 의
+   translate(아래서 올라오기)를 덮어써서 안내만 먼저 떠 보였습니다. 올라오는 1.1s 뒤 시작. */
+.hint.is-in,
+.hint:not(.reveal){animation:hintBuzz 2.6s linear 1.2s infinite}   /* 0.5초 빠르게 떨고 2초 쉬기 */
 /* 가운데를 축으로 ±1.5도, 좌우 1px 로 네 번 떨고 멈춥니다. 전화기 진동 느낌. */
 @keyframes hintBuzz{
   0%,20%,100%{rotate:0deg; translate:0 0}
