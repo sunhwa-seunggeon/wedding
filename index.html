@@ -509,7 +509,7 @@ img{display:block;max-width:100%}
 .profile{margin:0}
 /* display:block + width:100% 가 필요합니다. button 은 기본이 inline-block 이라
    내용(절대 위치 이미지)에 맞춰 폭이 0 으로 줄어듭니다. */
-.profile__card{display:block; position:relative; width:100%; aspect-ratio:1; padding:0; border:0; background:var(--paper-2); cursor:pointer}
+.profile__card{display:block; position:relative; width:100%; aspect-ratio:1; padding:0; border:0; background:var(--paper-2); cursor:pointer; -webkit-tap-highlight-color:transparent}
 .profile__card::after{content:""; position:absolute; inset:0; border:1.1px solid transparent; transition:border-color .25s}
 /* 테두리는 아기 사진이 떠 있는 동안에만. :hover 는 뺐습니다 — 클릭한 뒤에도 커서가
    카드 위에 남아 누른 쪽만 계속 물들어 보였습니다. */
@@ -862,6 +862,7 @@ button.line-button{font-family:var(--kr); letter-spacing:.08em; font-size:13.2px
   .lb__nav:focus, .lb__nav:focus-visible,
   .deck__nav:focus, .deck__nav:focus-visible,
   .reel__nav:focus, .reel__nav:focus-visible{outline:none}
+  .profile__card:focus-visible::after{border-color:transparent}
 }
 </style>
 </head>
@@ -1185,6 +1186,7 @@ function setupProfiles() {
     wrap.classList.toggle("is-baby", showBaby);
   };
   cards.forEach((card) => card.addEventListener("click", () => {
+    if (matchMedia("(hover:none)").matches) card.blur();   // 손가락 기기: 누른 카드에 포커스를 남기지 않습니다
     showBaby = !showBaby;
     // 유도 애니메이션(babyPeek)을 먼저 끄고 스타일을 한 번 굳힙니다.
     // 애니메이션이 opacity 를 잡고 있는 채로 같은 틱에 is-active 를 붙이면
