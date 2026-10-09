@@ -502,13 +502,19 @@ img{display:block;max-width:100%}
    (포인트색은 영문 라벨 · 짧은 선 · 큰 숫자에만 쓴다는 규칙 그대로). */
 .sign{margin:0 auto; text-align:center; line-height:1}
 /* 제목 밑 한 줄 안내(눌러보세요 / 넘겨보세요). 표지 본문과 같은 Pretendard. */
-/* 안내 한 줄은 본문보다 한 단 작게 두되, 흐리게 하지 않고 포인트색으로 세웁니다.
-   앞에 작은 그림(손가락 / 양쪽 화살표)을 붙여 글을 읽기 전에 동작이 먼저 보이게. */
+/* 안내 한 줄 — 상자 없이 글만. 흐리게 하지 않고 포인트색으로 세우고, 앞에 작은
+   그림(손가락 / 양쪽 화살표)을 붙여 글을 읽기 전에 동작이 먼저 보이게.
+   그리고 천천히 흔들립니다: 신랑·신부 쪽은 누르듯 위아래로, 갤러리 쪽은 미는 방향
+   따라 좌우로. 한 번에 2px 안쪽이라 글은 읽히고 눈만 갑니다. */
 .hint{
   display:inline-flex; align-items:center; gap:6.6px; margin:11px 0 30.8px;
-  padding:6.6px 14.3px; border-radius:999px; border:1.1px solid var(--hair);
   color:var(--forest); font:500 12.65px/1.4 var(--display); letter-spacing:.01em;
+  animation:hintPress 2.4s ease-in-out infinite;
 }
+.gal .hint{animation-name:hintSwipe}
+@keyframes hintPress{ 0%,100%{translate:0 0} 50%{translate:0 2.2px} }
+@keyframes hintSwipe{ 0%,100%{translate:0 0} 25%{translate:-3.3px 0} 75%{translate:3.3px 0} }
+@media (prefers-reduced-motion:reduce){ .hint{animation:none} }
 .hint svg{flex:none; width:15.4px; height:15.4px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 .hint b{font-weight:600}
 /* 두 줄짜리(갤러리)는 가운데 맞추고 줄 사이를 조금 띄웁니다. */
