@@ -504,14 +504,20 @@ img{display:block;max-width:100%}
 /* 제목 밑 한 줄 안내(눌러보세요 / 넘겨보세요). 표지 본문과 같은 Pretendard. */
 /* 안내 한 줄 — 상자 없이 글만. 흐리게 하지 않고 포인트색으로 세우고, 앞에 작은
    그림(손가락 / 양쪽 화살표)을 붙여 글을 읽기 전에 동작이 먼저 보이게.
-   그리고 가운데를 축으로 천천히 좌우로 기울어집니다(±2도). 글은 읽히고 눈만 갑니다. */
+   그리고 2.6초마다 반 초쯤 진동하듯 떨립니다. 글은 읽히고 눈만 갑니다. */
 .hint{
   display:inline-flex; align-items:center; gap:6.6px; margin:11px 0 30.8px;
   color:var(--forest); font:400 12.65px/1.4 var(--display); letter-spacing:.01em;
   transform-origin:50% 50%;
-  animation:hintSway 2.4s ease-in-out infinite;   /* 가운데를 축으로 \ | / 하고 기울어집니다 */
+  animation:hintBuzz 2.6s linear infinite;   /* 진동 — 0.5초 빠르게 떨고 2초 쉬기 */
 }
-@keyframes hintSway{ 0%,100%{rotate:-2deg} 50%{rotate:2deg} }
+/* 가운데를 축으로 ±1.5도, 좌우 1px 로 네 번 떨고 멈춥니다. 전화기 진동 느낌. */
+@keyframes hintBuzz{
+  0%,20%,100%{rotate:0deg; translate:0 0}
+  3%{rotate:-1.5deg; translate:-1.1px 0}  6%{rotate:1.5deg; translate:1.1px 0}
+  9%{rotate:-1.5deg; translate:-1.1px 0}  12%{rotate:1.5deg; translate:1.1px 0}
+  15%{rotate:-1deg; translate:-.5px 0}    18%{rotate:.6deg; translate:.5px 0}
+}
 @media (prefers-reduced-motion:reduce){ .hint{animation:none} }
 .hint svg{flex:none; width:15.4px; height:15.4px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 .hint b{font-weight:500}
